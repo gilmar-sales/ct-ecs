@@ -1,2 +1,2 @@
 # ct-ecs
-compile-time entity component system
+header-only compile-time entity component system library
