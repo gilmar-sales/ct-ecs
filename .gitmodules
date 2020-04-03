@@ -1,0 +1,3 @@
+[submodule "dependencies/mp"]
+	path = dependencies/mp
+	url = https://github.com/gilmarxd/mp.git
