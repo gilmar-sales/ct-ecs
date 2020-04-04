@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/entities_utils.hpp"
+#include "../entities/entity.hpp"
 #include "../mp/types/types_list.hpp"
 
 namespace ecs
@@ -33,6 +33,14 @@ namespace ecs
         auto& get_component(EntityID id) noexcept
         {
             return std::get<std::vector<T>>(m_vectors)[id];
+        }
+
+        void move_data(EntityID from, EntityID to)
+        {
+            mp::for_tuple([this, from, to] (auto& vector)
+            {
+                vector[to] = vector[from];
+            }, m_vectors);
         }
     private:
         mp::rename<TupleOfVectors, ComponentList> m_vectors;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "component_manager.hpp"
+#include "entity_manager.hpp"
 
 /* Class Manager
  * 
@@ -19,6 +20,7 @@ namespace ecs
         Manager();
         ~Manager();
     private:
+        EntityManager<Settings> m_entities;
         ComponentManager<Settings> m_components;
     };
     
