@@ -1,16 +1,11 @@
 #pragma once
 
-#include "entities_utils.hpp"
+#include <bitset>
+#include <vector>
+#include <tuple>
 
 namespace ecs {
-
-    template<typename TSettings>
-    struct Entity
-    {
-        using Settings = TSettings;
-        using Bitset = typename Settings::Bitset;
-        
-        Bitset bitset;
-    };
+    
+    using EntityID = unsigned;
     
 }
