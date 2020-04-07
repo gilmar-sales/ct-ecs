@@ -2,12 +2,13 @@
 
 namespace ecs
 {
-    template <typename TComponentList, typename TTagList>
+    template <typename TComponentList, typename TTagList, typename TSystemList>
     struct Settings
     {
         using ComponentList = TComponentList;
         using TagList = TTagList;
-        using ThisType = Settings<ComponentList, TagList>;
+        using SystemList = TSystemList;
+        using ThisType = Settings<ComponentList, TagList, SystemList>;
 
         template <typename T>
         static constexpr bool is_component() noexcept
