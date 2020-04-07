@@ -1,7 +1,10 @@
 #pragma once
 
+#include <vector>
+#include <tuple>
+
 #include "../entities/entity.hpp"
-#include "../mp/types/types_list.hpp"
+#include "../dependencies/mp/types/types_list.hpp"
 
 namespace ecs
 {
@@ -30,7 +33,7 @@ namespace ecs
         }
 
         template <typename T>
-        auto& get_component(EntityID id) noexcept
+        T& get_component(EntityID id)
         {
             return std::get<std::vector<T>>(m_vectors)[id];
         }
