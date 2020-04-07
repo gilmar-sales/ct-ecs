@@ -5,16 +5,16 @@
 #include <tuple>
 #include <queue>
 
-#include "entities/entity.hpp"
+#include "../entities/entity.hpp"
 
 namespace ecs {
     template<typename TSettings>
     class EntityManager {
         using Settings = TSettings;
 
-        using Bitset = Settings::Bitset;
+        using Bitset = typename Settings::Bitset;
     public:
-        EntityManager(unsigned int size) : m_next_id(0), m_signatures(size) { }
+        EntityManager(unsigned int size) : m_next_id{0}, m_signatures(size) { }
         ~EntityManager() = default;
 
         EntityID create_entity()
@@ -34,7 +34,7 @@ namespace ecs {
             m_signatures[id] = signature;
         }
 
-        Bitset& get_signature(EntityID) const
+        Bitset& get_signature(EntityID id) const
         {
             m_signatures[id];
         }
@@ -42,6 +42,11 @@ namespace ecs {
         void grow(unsigned size)
         {
             m_signatures.resize(size);
+        }
+
+        EntityID get_last_entity()
+        {
+            return m_next_id - 1;
         }
 
     private:
