@@ -44,6 +44,14 @@ namespace ecs
             return m_components.template get_component<T>(id);
         }
 
+        void update(float delta_time)
+        {
+            mp::for_tuple([this, delta_time](auto& system)
+            {
+                system.update(m_components, delta_time);
+            }, m_systems);
+        }
+
     private:
         EntityManager<Settings> m_entities;
         ComponentManager<Settings> m_components;
