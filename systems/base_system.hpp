@@ -14,6 +14,7 @@ namespace ecs
     public:
         BaseSystem() : m_registered_entities()
         {
+            
         }
 
         void update(float delta_time)
@@ -24,6 +25,11 @@ namespace ecs
         void register_entity(EntityID id)
         {
             m_registered_entities.insert(id);
+        }
+
+        void unregister_entity(EntityID id)
+        {
+            m_registered_entities.erase(id);
         }
         //auto& get_signature() const { return m_signature; }
 
