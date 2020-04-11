@@ -1,5 +1,7 @@
 #pragma once
 
+#include <bitset>
+
 namespace ecs
 {
     template <typename TComponentList, typename TTagList, typename TSystemList>
