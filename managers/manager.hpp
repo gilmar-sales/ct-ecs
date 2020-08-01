@@ -20,10 +20,11 @@ namespace ecs
         using Bitset = typename Settings::Bitset;
 
         using SystemsContainer = mp::rename<std::tuple, SystemList>;
+        using SignaturesContainer = mp::generate_tuple<Bitset, mp::size_of<SystemList>()>;
     public:
         Manager(unsigned size) : m_entities(size), m_components(size)
         {
-            
+            initialize_signatures();
         };
         ~Manager() = default;
 
@@ -44,18 +45,107 @@ namespace ecs
             return m_components.template get_component<T>(id);
         }
 
-        void update(float delta_time)
+        template<typename T>
+        T& add_component(EntityID id)
         {
-            mp::for_tuple([this, delta_time](auto& system)
+            m_entities.template add_component<T>(id);
+
+            mp::for_tuple([this, id](auto& system)
+            {   
+                using system_t = std::remove_reference_t<decltype(system)>;
+
+                auto& sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
+
+                if ((sys_sig & m_entities.get_signature(id)) == sys_sig) {
+                    system.register_entity(id);
+                }
+
+            },
+            m_systems);
+            
+            return m_components.template get_component<T>(id);
+        }
+
+        template<typename T>
+        void remove_component(EntityID id)
+        {
+            m_entities.template remove_component<T>(id);
+
+            mp::for_tuple([this, id](auto& system)
+            {   
+                using system_t = std::remove_reference_t<decltype(system)>;
+
+                auto& sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
+
+                if ((sys_sig & m_entities.get_signature(id)) != sys_sig) {
+                    system.unregister_entity(id);
+                }
+
+            },
+            m_systems);
+        }
+
+        template<typename T>
+        bool has_tag(EntityID id)
+        {
+            return m_entities.template has_tag<T>(id);
+        }
+
+        template<typename T>
+        bool add_tag(EntityID id)
+        {
+            m_entities.template add_tag<T>(id);
+
+            mp::for_tuple([this, id](auto& system)
+            {   
+                using system_t = std::remove_reference_t<decltype(system)>;
+
+                auto& sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
+
+                if ((sys_sig & m_entities.get_signature(id)) == sys_sig) {
+                    system.register_entity(id);
+                }
+
+            },
+            m_systems);
+            
+            return true;
+        }
+
+        void update()
+        {
+            mp::for_tuple([this](auto& system)
             {
-                system.update(m_components, delta_time);
+                system.update(m_components);
             }, m_systems);
         }
 
     private:
+
+        void initialize_signatures()
+        {
+
+            mp::for_tuple([this](auto system)
+            {
+                using System = decltype(system);
+                mp::for_tuple([this](auto sig)
+                {
+                    using Sig = decltype(sig);
+                    
+                    if( Settings::template is_component<Sig>() )
+                        std::get<mp::index_of<System, SystemsContainer>()>(m_signatures)[Settings::template component_bit<Sig>()] = 1;
+                    else if( Settings::template is_tag<Sig>() )
+                        std::get<mp::index_of<System, SystemsContainer>()>(m_signatures)[Settings::template tag_bit<Sig>()] = 1;
+                
+                }, typename System::Signature{});
+            }, m_systems);
+        }
+
         EntityManager<Settings> m_entities;
         ComponentManager<Settings> m_components;
         SystemsContainer m_systems;
+        SignaturesContainer m_signatures;
+
     };
     
 } // namespace ecs

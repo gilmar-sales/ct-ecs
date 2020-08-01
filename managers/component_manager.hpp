@@ -3,7 +3,7 @@
 #include <vector>
 #include <tuple>
 
-#include "../entities/entity.hpp"
+#include "../core/type_defs.hpp"
 #include "../dependencies/mp/types/types_list.hpp"
 
 namespace ecs

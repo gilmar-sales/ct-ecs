@@ -1,11 +1,8 @@
 #pragma once
 
-#include <bitset>
 #include <vector>
-#include <tuple>
-#include <queue>
 
-#include "../entities/entity.hpp"
+#include "../core/type_defs.hpp"
 
 namespace ecs {
     template<typename TSettings>
@@ -29,14 +26,46 @@ namespace ecs {
             m_next_id--;
         }
 
-        void set_signature(EntityID id, Bitset signature)
+        template<typename T>
+        bool has_component(EntityID id)
         {
-            m_signatures[id] = signature;
+            return m_signatures[id][Settings::template component_bit<T>()];
         }
 
-        Bitset& get_signature(EntityID id) const
+        template<typename T>
+        void add_component(EntityID id)
         {
-            m_signatures[id];
+            m_signatures[id][Settings::template component_bit<T>()] = 1;
+        }
+
+        template<typename T>
+        void remove_component(EntityID id)
+        {
+            m_signatures[id][Settings::template component_bit<T>()] = 0;
+        }
+
+        template<typename T>
+        void add_tag(EntityID id)
+        {
+            m_signatures[id][Settings::template tag_bit<T>()] = 1;
+        }
+
+        template<typename T>
+        void remove_tag(EntityID id)
+        {
+            m_signatures[id][Settings::template tag_bit<T>()] = 0;
+        }
+
+        template<typename T>
+
+        bool has_tag(EntityID id)
+        {
+            return m_signatures[id][Settings::template tag_bit<T>()];
+        }
+
+        const Bitset& get_signature(EntityID id) 
+        {
+            return m_signatures[id];
         }
 
         void grow(unsigned size)

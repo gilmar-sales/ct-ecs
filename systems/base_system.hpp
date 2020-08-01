@@ -1,10 +1,9 @@
 #pragma once
 
-#include <tuple>
 #include <set>
 
 #include "../dependencies/mp/types/types_list.hpp"
-#include "../entities/entity.hpp"
+#include "../core/type_defs.hpp"
 
 namespace ecs
 {
@@ -17,9 +16,9 @@ namespace ecs
             
         }
 
-        void update(float delta_time)
+        void update()
         {
-            static_cast<Derived*>(this)->update(delta_time);
+            static_cast<Derived*>(this)->update();
         }
 
         void register_entity(EntityID id)
@@ -31,7 +30,6 @@ namespace ecs
         {
             m_registered_entities.erase(id);
         }
-        //auto& get_signature() const { return m_signature; }
 
     protected:
         std::set<EntityID> m_registered_entities;
