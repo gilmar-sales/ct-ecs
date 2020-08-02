@@ -1,6 +1,6 @@
 #include "../../ecs.hpp"
 
-#include "systems/physics_sytem.hpp"
+#include "systems/physics_system.hpp"
 
 #include "components/transform_component.hpp"
 #include "tags/tags.hpp"
