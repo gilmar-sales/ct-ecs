@@ -10,7 +10,7 @@ namespace ecs
     class BaseSystem
     {
     public:
-        BaseSystem() : m_registered_entities()
+        BaseSystem(unsigned capacity = 1024u) : m_registered_entities(capacity)
         {
             
         }
@@ -28,6 +28,11 @@ namespace ecs
         void unregister_entity(EntityID id)
         {
             m_registered_entities.remove(id);
+        }
+        
+        inline void resize(unsigned size)
+        {
+            m_registered_entities.resize(size);
         }
 
     protected:

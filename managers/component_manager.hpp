@@ -28,7 +28,7 @@ namespace ecs
         {
             mp::for_tuple([this, new_size] (auto& vector)
             {
-                vector.resize(new_size);
+                vector.reserve(new_size);
             }, m_vectors);
         }
 

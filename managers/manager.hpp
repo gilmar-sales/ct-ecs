@@ -22,14 +22,24 @@ namespace ecs
         using SystemsContainer = mp::rename<std::tuple, SystemList>;
         using SignaturesContainer = mp::generate_tuple<Bitset, mp::size_of<SystemList>()>;
     public:
-        Manager(unsigned size) : m_entities(size), m_components(size)
+        Manager(unsigned capacity = 1024) : m_entities(capacity), m_components(capacity)
         {
             initialize_signatures();
+
+            //initialize systems
+            mp::for_tuple([this, capacity](auto& system)
+                {
+                    system.resize(capacity);
+                },
+                m_systems);
         };
         ~Manager() = default;
 
         EntityID create_entity()
         {
+            if(m_entities.get_last_entity() >= m_capacity)
+                resize(m_capacity * 2);
+
             return m_entities.create_entity();
         }
 
@@ -141,11 +151,18 @@ namespace ecs
             }, m_systems);
         }
 
+        void resize(unsigned size)
+        {
+            m_entities.resize(size);
+            m_components.resize(size);
+            m_capacity = size;
+        }
+
         EntityManager<Settings> m_entities;
         ComponentManager<Settings> m_components;
         SystemsContainer m_systems;
         SignaturesContainer m_signatures;
-
+        unsigned m_capacity;
     };
     
 } // namespace ecs
