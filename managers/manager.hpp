@@ -37,7 +37,7 @@ namespace ecs
 
         EntityID create_entity()
         {
-            if(m_entities.get_last_entity() -1 >= m_capacity)
+            if(m_entities.get_last_entity() >= m_capacity)
                 resize(m_capacity * 2);
 
             return m_entities.create_entity();
