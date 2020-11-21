@@ -5,6 +5,12 @@
 #include "../core/type_defs.hpp"
 
 namespace ecs {
+
+    /**
+     * @brief The EntityManager will create entity ids and keep them contiguous
+     * 
+     * @tparam TSettings 
+     */
     template<typename TSettings>
     class EntityManager {
         using Settings = TSettings;

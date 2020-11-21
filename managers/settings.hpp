@@ -4,6 +4,14 @@
 
 namespace ecs
 {
+    /**
+     * @brief The Settings class hold the component list, tag list and system list and is the template
+     * param of the Managers classes. Also implements helper functions to organize the ECS Manager
+     * 
+     * @tparam TComponentList 
+     * @tparam TTagList 
+     * @tparam TSystemList 
+     */
     template <typename TComponentList, typename TTagList, typename TSystemList>
     struct Settings
     {

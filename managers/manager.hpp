@@ -6,9 +6,12 @@
 namespace ecs
 {
 
-    /* The Manager class will be responsible to control the others managers
-    * and run all the systems
-    */    
+   /**
+    * @brief The Manager class will be responsible to orchestrate the others managers
+    * like: resize all manager if it's needed, run the systems, forward components
+    * 
+    * @tparam TSettings 
+    */
    template <typename TSettings>
     class Manager
     {
