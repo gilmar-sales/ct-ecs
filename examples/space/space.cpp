@@ -1,4 +1,4 @@
-#include "../../ecs.hpp"
+#include "../../include/ecs/ecs.hpp"
 
 #include "systems/physics_system.hpp"
 
