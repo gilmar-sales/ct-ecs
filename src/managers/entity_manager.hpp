@@ -27,8 +27,8 @@ namespace ecs {
 
         void destroy_entity(EntityID id)
         {
-            m_signatures[id] = m_signatures[m_last_entity];
-            m_signatures[m_last_entity].reset();
+            m_signatures[id] = m_signatures[m_last_entity-1];
+            m_signatures[m_last_entity-1].reset();
             m_last_entity--;
         }
 
@@ -81,7 +81,15 @@ namespace ecs {
 
         EntityID get_last_entity()
         {
-            return m_last_entity;
+            return m_last_entity -1;
+        }
+
+        inline void for_each(std::function<void(EntityID)> function)
+        {
+            for(EntityID entity = 0; entity < m_last_entity; entity++)
+            {
+                function(entity);
+            }
         }
 
     private:
