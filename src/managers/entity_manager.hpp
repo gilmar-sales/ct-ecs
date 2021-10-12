@@ -77,7 +77,7 @@ namespace ecs {
 
         void resize(unsigned size)
         {
-            m_signatures.reserve(size);
+            m_signatures.resize(size);
         }
 
         EntityID get_last_entity()
