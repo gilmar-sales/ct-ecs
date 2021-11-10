@@ -1,7 +1,7 @@
 #include <iostream>
 #include <tuple>
 
-#include "../../../systems/base_system.hpp"
+#include <ecs/ecs.hpp>
 
 #include "../components/transform_component.hpp"
 
@@ -26,7 +26,8 @@ namespace ecs{
                 transform.pos_y += 1;
                 transform.pos_z += 1;
 
-                //std::cout << "phys process entity: " << entity << std::endl;
+                // std::cout << "phys process entity: " << entity << std::endl;
+                // std::cout << "position: " << transform.pos_x << ", " << transform.pos_y << ", " << transform.pos_z << std::endl;
             }
         }
     };

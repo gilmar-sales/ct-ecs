@@ -13,15 +13,20 @@ using ECSManager = ecs::Manager<Settings>;
 
 int main(int argc, char const *argv[])
 {
-    ECSManager mgr = ECSManager(100);
+    ECSManager mgr = ECSManager();
     
-    auto ent = mgr.create_entity(); 
+    
+    for(int i = 0; i < 1000; i++) {
+        for(int j = 0; j < 1000; j++) {
+            auto ent = mgr.create_entity(); 
 
-    mgr.add_component<ecs::TransformComponent>(ent);
-    
-    for(int i = 0; i < 1000000; i++)
+            mgr.add_component<ecs::TransformComponent>(ent, {1.f,2.f,3.f});
+            if (j > 800) {
+                mgr.destroy_entity(400);
+            }
+        }
         mgr.update();
-
+    }
 
     std::cout << "completed" << std::endl;
     return 0;
