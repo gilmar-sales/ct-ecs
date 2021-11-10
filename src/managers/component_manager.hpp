@@ -32,6 +32,13 @@ namespace ecs
             }, m_vectors);
         }
 
+
+        template <typename T>
+        void set_component(EntityID id, T value)
+        {
+            std::get<std::vector<T>>(m_vectors)[id] = value;
+        }
+
         template <typename T>
         T& get_component(EntityID id)
         {

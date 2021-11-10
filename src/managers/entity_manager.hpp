@@ -18,19 +18,19 @@ namespace ecs {
 
         using Bitset = typename Settings::Bitset;
     public:
-        EntityManager(unsigned int size) : m_last_entity{0}, m_signatures(size) { }
+        EntityManager(unsigned int size) : m_next_entity{0}, m_signatures(size) { }
         ~EntityManager() = default;
 
         EntityID create_entity()
         {
-            return m_last_entity++;
+            return m_next_entity++;
         } 
 
         void destroy_entity(EntityID id)
         {
-            m_signatures[id] = m_signatures[m_last_entity-1];
-            m_signatures[m_last_entity-1].reset();
-            m_last_entity--;
+            m_signatures[id] = m_signatures[m_next_entity-1];
+            m_signatures[m_next_entity-1].reset();
+            m_next_entity--;
         }
 
         template<typename T>
@@ -80,21 +80,21 @@ namespace ecs {
             m_signatures.resize(size);
         }
 
-        EntityID get_last_entity()
+        EntityID get_next_entity()
         {
-            return m_last_entity -1;
+            return m_next_entity;
         }
 
         inline void for_each(std::function<void(EntityID)> function)
         {
-            for(EntityID entity = 0; entity < m_last_entity; entity++)
+            for(EntityID entity = 0; entity < m_next_entity; entity++)
             {
                 function(entity);
             }
         }
 
     private:
-        EntityID m_last_entity;
+        EntityID m_next_entity;
         std::vector<Bitset> m_signatures;
     };
 }

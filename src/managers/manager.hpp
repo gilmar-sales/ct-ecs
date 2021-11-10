@@ -40,7 +40,7 @@ namespace ecs
 
         EntityID create_entity()
         {
-            if(m_entities.get_last_entity() >= m_capacity)
+            if(m_entities.get_next_entity() >= m_capacity)
                 resize(m_capacity * 2);
 
             return m_entities.create_entity();
@@ -61,7 +61,7 @@ namespace ecs
             },
             m_systems);
 
-            m_components.move_data(m_entities.get_last_entity(), id);
+            m_components.move_data(m_entities.get_next_entity(), id);
             m_entities.destroy_entity(id);
         }
 
@@ -89,6 +89,30 @@ namespace ecs
             },
             m_systems);
             
+            return m_components.template get_component<T>(id);
+        }
+
+
+        template<typename T>
+        T& add_component(EntityID id, T value)
+        {
+            m_entities.template add_component<T>(id);
+
+            mp::for_tuple([this, id](auto& system)
+            {   
+                using system_t = std::remove_reference_t<decltype(system)>;
+
+                auto& sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
+
+                if ((sys_sig & m_entities.get_signature(id)) == sys_sig) {
+                    system.register_entity(id);
+                }
+
+            },
+            m_systems);
+            
+            m_components.template set_component<T>(id, value);
+
             return m_components.template get_component<T>(id);
         }
 
@@ -183,6 +207,7 @@ namespace ecs
                     system.resize(size);
                 },
                 m_systems);
+
             m_capacity = size;
         }
 
