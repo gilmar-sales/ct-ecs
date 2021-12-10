@@ -10,6 +10,8 @@ add_executable(space
 )
 target_link_libraries(space
     ct-ecs
+    glad
+    glfw
 )
 
 target_include_directories(space
