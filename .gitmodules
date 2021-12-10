@@ -1,3 +1,6 @@
 [submodule "dependencies/mp"]
 	path = dependencies/mp
 	url = https://github.com/gilmarxd/mp.git
+[submodule ".\\dependencies\\glad"]
+	path = .\\dependencies\\glad
+	url = https://github.com/gilmarxd/glad.git
