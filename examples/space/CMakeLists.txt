@@ -1,5 +1,7 @@
 project(SPACE)
 
+find_package(OpenGL REQUIRED)
+
 file(GLOB_RECURSE SPACE_SRC
     "*.cpp"
     "*.hpp"
@@ -16,7 +18,7 @@ target_link_libraries(space
 
 target_include_directories(space
 	PUBLIC
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
