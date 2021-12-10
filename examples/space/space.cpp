@@ -4,6 +4,7 @@
 
 #include "components/transform_component.hpp"
 #include "tags/tags.hpp"
+#include "core/window.hpp"
 
 using ComponentList = std::tuple<ecs::TransformComponent>;
 using TagList = std::tuple<ecs::PlayerTag>;
@@ -14,7 +15,7 @@ using ECSManager = ecs::Manager<Settings>;
 int main(int argc, char const *argv[])
 {
     ECSManager mgr = ECSManager();
-    
+    Window window = Window("Space", 800, 600);
     
     for(int i = 0; i < 1000; i++) {
         for(int j = 0; j < 1000; j++) {
