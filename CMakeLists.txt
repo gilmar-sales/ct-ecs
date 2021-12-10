@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.15)
+
 project(CT-ECS)
 
 file(GLOB_RECURSE ECS_SRC
@@ -17,3 +19,4 @@ target_include_directories(ct-ecs INTERFACE
 )
 
 add_subdirectory(examples)
+add_subdirectory(dependencies)
