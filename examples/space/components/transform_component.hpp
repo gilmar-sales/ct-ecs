@@ -1,10 +1,14 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 namespace ecs
 {
     struct TransformComponent
     {
-        float pos_x, pos_y, pos_z;
+        glm::vec3 position;
+        glm::vec3 scale;
+        glm::vec3 rotation;
     };
     
 } // namespace ecs

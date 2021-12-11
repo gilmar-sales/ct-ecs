@@ -17,6 +17,9 @@ class Window
 public:
     Window(std::string title, unsigned width, unsigned height);
     ~Window();
+
+    GLFWwindow* get_native_window() { return native_window; }
+    void update();
 private:
     WindowData data;
     GLFWwindow* native_window;

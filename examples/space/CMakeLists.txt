@@ -14,6 +14,7 @@ target_link_libraries(space
     ct-ecs
     glad
     glfw
+    glm
 )
 
 target_include_directories(space

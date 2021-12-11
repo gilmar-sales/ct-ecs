@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <iostream>
+
 Window::Window(std::string title, unsigned width, unsigned height): data({title, width, height})
 {
     int glfw_status = glfwInit();
@@ -13,6 +15,11 @@ Window::Window(std::string title, unsigned width, unsigned height): data({title,
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     native_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+
+    if (!native_window) {
+        std::cout << "Couldn't initialize GLAD!\n";
+    }
+
     glfwSetWindowUserPointer(native_window, this);
 
     glfwMakeContextCurrent(native_window);
@@ -23,12 +30,31 @@ Window::Window(std::string title, unsigned width, unsigned height): data({title,
         std::cout << "Couldn't initialize GLAD!\n";
     }
 
+    std::cout << glfwGetVersionString() << std::endl;
+    
     glViewport(0, 0, width, height);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glfwSetFramebufferSizeCallback(native_window, [](GLFWwindow* native_window, int width, int height) {
         Window* window = (Window*) glfwGetWindowUserPointer(native_window);
         window->update_size(width, height);
     });
+
+    glfwSetWindowCloseCallback(native_window, [](GLFWwindow* native_window) {
+        glfwSetWindowShouldClose(native_window, 1);
+    });
+}
+
+Window::~Window()
+{
+    glfwDestroyWindow(native_window);
+    glfwTerminate();
+}
+
+void Window::update() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwPollEvents();
 }
 
 void Window::update_size(int width, int height) {
@@ -38,8 +64,3 @@ void Window::update_size(int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-Window::~Window()
-{
-    glfwDestroyWindow(native_window);
-    glfwTerminate();
-}
