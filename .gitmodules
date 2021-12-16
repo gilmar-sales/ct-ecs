@@ -1,3 +1,12 @@
 [submodule "dependencies/mp"]
 	path = dependencies/mp
 	url = https://github.com/gilmarxd/mp.git
+[submodule "dependencies/glad"]
+	path = dependencies/glad
+	url = https://github.com/gilmarxd/glad.git
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/gilmarxd/glfw.git
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm.git
