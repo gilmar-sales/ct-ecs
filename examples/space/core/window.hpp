@@ -19,6 +19,11 @@ public:
     ~Window();
 
     GLFWwindow* get_native_window() { return native_window; }
+    
+    unsigned get_window_width() { return data.width; }
+    unsigned get_window_height() { return data.height; }
+    std::string get_title() { return data.title; }
+    
     void update();
 private:
     WindowData data;
