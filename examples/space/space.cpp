@@ -6,6 +6,5 @@ int main(int argc, char const *argv[])
 
     app.run();
     
-    std::cout << "completed" << std::endl;
     return 0;
 }
