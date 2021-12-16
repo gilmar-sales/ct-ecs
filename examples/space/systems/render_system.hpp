@@ -75,6 +75,9 @@ namespace ecs{
                 glm::mat4 model          = glm::mat4(1.0f);
                 model       = glm::translate(model, transform.position);
                 model       = glm::scale(model, transform.scale);
+                model       = glm::rotate(model, glm::radians(transform.rotation.x), {1, 0, 0});
+                model       = glm::rotate(model, glm::radians(transform.rotation.y), {0, 1, 0});
+                model       = glm::rotate(model, glm::radians(transform.rotation.z), {0, 0, 1});
 
                 glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, &model[0][0]);
                 glUniform3fv(glGetUniformLocation(shaderProgram, "color"), 1, &color[0]);
@@ -88,7 +91,6 @@ namespace ecs{
         GLuint shaderProgram;
         glm::vec3 color;
 
-        
         const char* vertexSource = R"glsl(
             #version 330 core
             layout(location = 0) in vec3 position;
