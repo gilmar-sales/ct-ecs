@@ -11,7 +11,7 @@ namespace ecs
 	public:
 		sparse_set(unsigned capacity = 512u) 
 		{
-			m_dense.resize(capacity);
+			m_dense.reserve(capacity);
 			m_sparse.resize(capacity);
 		}
 		~sparse_set() = default;
@@ -46,7 +46,7 @@ namespace ecs
 		
 		void resize(unsigned size)
 		{
-			m_dense.resize(size);
+			m_dense.reserve(size);
 			m_sparse.resize(size);
 		}
 
@@ -62,6 +62,10 @@ namespace ecs
 			}
 
 			m_sorted = true;
+		}
+
+		auto size() {
+			return m_dense.size();
 		}
 
 		auto begin() const {
