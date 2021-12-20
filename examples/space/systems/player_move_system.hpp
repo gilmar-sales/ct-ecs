@@ -33,17 +33,9 @@ namespace ecs
 
                 if (Input::IsKeyPressed(Key::W))
                 {
-                    glm::vec4 front = {0, 1, 0, 0};
-                    glm::mat4 rotation = {
-                        {1, 0, 0, 0},
-                        {0, 1, 0, 0},
-                        {0, 0, 1, 0},
-                        {0, 0, 0, 1}};
-                    rotation = glm::rotate(rotation, glm::radians(transform.rotation.z), {0, 0, 1});
-                    front = front * rotation;
+                    glm::vec3 forward = transform.get_forward_direction();
 
-                    rigidbody.velocity += glm::normalize(glm::vec3(-front.x, front.y, front.z)) * 300.f * Time::delta_time;
-                    // transform.position += glm::normalize(glm::vec3(-front.x, front.y, front.z)) * 60.f * Time::delta_time;
+                    rigidbody.velocity += forward * 300.f * Time::delta_time;
                 }
 
                 if (Input::IsKeyPressed(Key::A))

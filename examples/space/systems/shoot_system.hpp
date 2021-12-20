@@ -42,16 +42,7 @@ namespace ecs
                     MeshComponent &bullet_mesh = Application::get_manager().add_component<MeshComponent>(bullet);
                     DecayComponent &bullet_decay = Application::get_manager().add_component<DecayComponent>(bullet);
 
-                    glm::vec4 front = {0, 1, 0, 0};
-                    glm::mat4 rotation = {
-                        {1, 0, 0, 0},
-                        {0, 1, 0, 0},
-                        {0, 0, 1, 0},
-                        {0, 0, 0, 1}};
-                    rotation = glm::rotate(rotation, glm::radians(transform.rotation.z), {0, 0, 1});
-                    front = front * rotation;
-
-                    glm::vec3 forward = glm::normalize(glm::vec3(-front.x, front.y, front.z));
+                    glm::vec3 forward = transform.get_forward_direction();
 
                     bullet_transform.position = transform.position + forward * 5.f;
                     bullet_transform.scale = {5};
