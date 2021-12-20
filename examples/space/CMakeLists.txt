@@ -26,7 +26,6 @@ target_include_directories(space
 )
 
 target_precompile_headers(space
-PUBLIC
-    "core/application.hpp"
-    <tuple>
+PUBLIC "./core/application.hpp"
+PUBLIC <tuple>
 )

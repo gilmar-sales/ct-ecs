@@ -6,6 +6,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
+#include "../tags/tags.hpp"
+
 Application *Application::instance = nullptr;
 
 Application::Application() : window("Space", 800, 600), mgr(ECSManager())
@@ -14,6 +16,7 @@ Application::Application() : window("Space", 800, 600), mgr(ECSManager())
     instance = this;
 
     init_player();
+    init_meteor_manager();
     // glfwSwapInterval(2);
 }
 
@@ -62,6 +65,7 @@ void Application::init_player()
     ecs::TransformComponent &transform = mgr.add_component<ecs::TransformComponent>(ent);
     ecs::MeshComponent &mesh = mgr.add_component<ecs::MeshComponent>(ent);
     ecs::RigidBodyComponent &rigidbody = mgr.add_component<ecs::RigidBodyComponent>(ent);
+    ecs::CircleColliderComponent &circle_collider = mgr.add_component<ecs::CircleColliderComponent>(ent);
     mgr.add_tag<ecs::PlayerTag>(ent);
 
     transform.position = {0, 0, 0};
@@ -70,4 +74,12 @@ void Application::init_player()
 
     mesh.VAO = initTriangleMesh();
     rigidbody.mass = 2;
+    circle_collider.radius = 10;
+}
+
+void Application::init_meteor_manager() 
+{
+    auto ent = mgr.create_entity();
+
+    mgr.add_tag<ecs::EnemyTag>(ent);
 }

@@ -7,10 +7,12 @@
 #include "../core/time.hpp"
 #include "../components/transform_component.hpp"
 #include "../components/rigid_body_component.hpp"
+#include "../tags/tags.hpp"
+
+class Application;
 
 namespace ecs
 {
-
     class PhysicsSystem : public BaseSystem<PhysicsSystem>
     {
     public:
@@ -32,22 +34,49 @@ namespace ecs
 
                 rigidbody.velocity /= 1 + rigidbody.mass * Time::delta_time;
 
-                if (transform.position.x > 400)
+                if (Application::get_manager().has_tag<ecs::EnemyTag>(entity))
                 {
-                    transform.position.x = -400;
-                }
-                else if (transform.position.x < -400)
-                {
-                    transform.position.x = 400;
-                }
+                    auto radius = transform.scale.x;
 
-                if (transform.position.y > 300)
-                {
-                    transform.position.y = -300;
-                }
-                else if (transform.position.y < -300)
-                {
-                    transform.position.y = 300;
+                    if (transform.position.x > 400 - radius)
+                    {
+                        rigidbody.velocity.x *= -1;
+                        transform.position.x = 400 - radius;
+                    }
+                    else if (transform.position.x < -400 + radius)
+                    {
+                        rigidbody.velocity.x *= -1;
+                        transform.position.x = -400 + radius;
+                    }
+
+                    if (transform.position.y > 300 - radius)
+                    {
+                        rigidbody.velocity.y *= -1;
+                        transform.position.y = 300 - radius;
+                    }
+                    else if (transform.position.y < -300 + radius)
+                    {
+                        rigidbody.velocity.y *= -1;
+                        transform.position.y = -300 + radius;
+                    }
+                } else if (Application::get_manager().has_tag<ecs::PlayerTag>(entity)) {
+                    if (transform.position.x > 400)
+                    {
+                        transform.position.x = -400;
+                    }
+                    else if (transform.position.x < -400)
+                    {
+                        transform.position.x = 400;
+                    }
+
+                    if (transform.position.y > 300)
+                    {
+                        transform.position.y = -300;
+                    }
+                    else if (transform.position.y < -300)
+                    {
+                        transform.position.y = 300;
+                    }
                 }
             }
         }

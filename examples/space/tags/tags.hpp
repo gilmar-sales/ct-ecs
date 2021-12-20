@@ -4,6 +4,6 @@ namespace ecs
 {
     struct MainCameraTag { };
     struct PlayerTag { };
-    struct MeteorManagerTag {};
     struct EnemyTag { };
+    struct BulletTag { };
 } // namespace ecs

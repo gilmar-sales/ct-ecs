@@ -41,7 +41,8 @@ namespace ecs
                     RigidBodyComponent &bullet_rigidbody = Application::get_manager().add_component<RigidBodyComponent>(bullet);
                     MeshComponent &bullet_mesh = Application::get_manager().add_component<MeshComponent>(bullet);
                     DecayComponent &bullet_decay = Application::get_manager().add_component<DecayComponent>(bullet);
-
+                    CircleColliderComponent &bullet_collider = Application::get_manager().add_component<CircleColliderComponent>(bullet);
+                    Application::get_manager().add_tag<BulletTag>(bullet);
                     glm::vec3 forward = transform.get_forward_direction();
 
                     bullet_transform.position = transform.position + forward * 5.f;
@@ -51,6 +52,7 @@ namespace ecs
                     bullet_mesh.VAO = Application::initCircleMesh();
                     bullet_decay.max_time = 0.8f;
                     bullet_decay.current = 0.f;
+                    bullet_collider.radius = 5;
                 }
             }
         }
