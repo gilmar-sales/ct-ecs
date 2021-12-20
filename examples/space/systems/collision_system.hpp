@@ -25,35 +25,35 @@ namespace ecs
         ~CollisionSystem() = default;
 
         template <typename T>
-        void update(T &comps)
+        void update(T &manager)
         {
             QuadTree quadtree = QuadTree(glm::vec2(0,0), 400.f, 4);
             
             for (int i = 0; i < m_registered_entities.size(); i++)
             {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                CircleColliderComponent &collider = comps.template get_component<CircleColliderComponent>(entity);
+                TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
+                CircleColliderComponent &collider = manager.template get_component<CircleColliderComponent>(entity);
                 quadtree.insert({entity, glm::vec2(transform.position.x, transform.position.y), collider.radius});
             }
 
             for (int i = 0; i < m_registered_entities.size(); i++)
             {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                RigidBodyComponent &rigidbody = comps.template get_component<RigidBodyComponent>(entity);
-                CircleColliderComponent &collider = comps.template get_component<CircleColliderComponent>(entity);
+                TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
+                RigidBodyComponent &rigidbody = manager.template get_component<RigidBodyComponent>(entity);
+                CircleColliderComponent &collider = manager.template get_component<CircleColliderComponent>(entity);
                 
                 Entity ent = {entity, glm::vec2(transform.position.x, transform.position.y), collider.radius};
                 std::vector<Entity> collisions = std::vector<Entity>();
                 quadtree.query(ent, &collisions);
 
-                if (Application::get_manager().has_tag<ecs::BulletTag>(entity)) 
+                if (manager.template has_tag<ecs::BulletTag>(entity)) 
                 {
                     for (auto collision : collisions) {
-                        if (Application::get_manager().has_tag<ecs::EnemyTag>(collision.id)) {
-                            Application::get_manager().destroy_entity(entity);
-                            Application::get_manager().destroy_entity(collision.id);
+                        if (manager.template has_tag<ecs::EnemyTag>(collision.id)) {
+                            manager.template destroy_entity(entity);
+                            manager.template destroy_entity(collision.id);
                         }
                     }
                 }

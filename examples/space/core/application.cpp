@@ -72,7 +72,7 @@ void Application::init_player()
     transform.scale = {20, 20, 20};
     transform.rotation = {0, 0, 0};
 
-    mesh.VAO = initTriangleMesh();
+    mesh.VAO = MeshAsset::initTriangleMesh();
     rigidbody.mass = 2;
     circle_collider.radius = 10;
 }

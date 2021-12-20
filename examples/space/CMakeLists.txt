@@ -4,7 +4,6 @@ find_package(OpenGL REQUIRED)
 
 file(GLOB_RECURSE SPACE_SRC
     "*.cpp"
-    "*.hpp"
 )
 
 add_executable(space 
@@ -26,6 +25,12 @@ target_include_directories(space
 )
 
 target_precompile_headers(space
-PUBLIC "./core/application.hpp"
-PUBLIC <tuple>
+    PRIVATE 
+    <iostream>
+    <vector>
+    <string>
+    <tuple>
+    <glad/glad.h>
+    <GLFW/glfw3.h>
+    <glm/glm.hpp>
 )

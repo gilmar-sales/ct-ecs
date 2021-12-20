@@ -174,7 +174,7 @@ namespace ecs
         void update()
         {
             mp::for_tuple([this](auto &system)
-                          { system.update(m_components); },
+                          { system.update(*this); },
                           m_systems);
         }
 

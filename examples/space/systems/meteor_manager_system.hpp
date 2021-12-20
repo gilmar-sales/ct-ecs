@@ -6,6 +6,7 @@
 
 #include "../core/time.hpp"
 #include "../core/input.hpp"
+#include "../core/mesh_asset.hpp"
 
 #include "../components/transform_component.hpp"
 #include "../components/rigid_body_component.hpp"
@@ -26,19 +27,19 @@ namespace ecs
         ~MeteorManagerSystem() = default;
 
         template <typename T>
-        void update(T &comps)
+        void update(T &manager)
         {
             if (m_registered_entities.size() == 1)
             {
                 for (int i = 0; i < current_wave; i++) {
-                auto ent = Application::get_manager().create_entity();
+                auto ent = manager. template create_entity();
 
-                Application::get_manager().add_tag<ecs::EnemyTag>(ent);
+                manager. template add_tag<ecs::EnemyTag>(ent);
 
-                TransformComponent &transform = Application::get_manager().add_component<TransformComponent>(ent);
-                RigidBodyComponent &rigidbody = Application::get_manager().add_component<RigidBodyComponent>(ent);
-                MeshComponent &mesh = Application::get_manager().add_component<MeshComponent>(ent);
-                CircleColliderComponent &collider = Application::get_manager().add_component<CircleColliderComponent>(ent);
+                TransformComponent &transform = manager. template add_component<TransformComponent>(ent);
+                RigidBodyComponent &rigidbody = manager. template add_component<RigidBodyComponent>(ent);
+                MeshComponent &mesh = manager. template add_component<MeshComponent>(ent);
+                CircleColliderComponent &collider = manager. template add_component<CircleColliderComponent>(ent);
 
                 std::random_device rd; // obtain a random number from hardware
                 std::mt19937 gen(rd()); // seed the generator
@@ -61,7 +62,7 @@ namespace ecs
                 rigidbody.velocity = glm::normalize(glm::vec3(x, y, 0)) * speed;
                 rigidbody.mass = 0.f;
 
-                mesh.VAO = Application::initCircleMesh();
+                mesh.VAO = MeshAsset::initCircleMesh();
                 collider.radius = size;
             }
 

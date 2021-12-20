@@ -21,18 +21,18 @@ namespace ecs
         ~DecaySystem() = default;
 
         template <typename T>
-        void update(T &comps)
+        void update(T &manager)
         {
             for (int i = 0; i < m_registered_entities.size(); i++)
             {
                 auto entity = m_registered_entities[i];
-                DecayComponent &decay = comps.template get_component<DecayComponent>(entity);
+                DecayComponent &decay = manager.template get_component<DecayComponent>(entity);
                 decay.current += Time::delta_time;
 
                 if (decay.current > decay.max_time)
                 {
                     decay = {0};
-                    Application::get_manager().destroy_entity(entity);
+                    manager.template destroy_entity(entity);
                 }
             }
         }

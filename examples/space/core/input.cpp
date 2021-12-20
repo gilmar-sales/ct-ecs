@@ -1,6 +1,6 @@
 #include "input.hpp"
 
-class Application;
+#include "application.hpp"
 
 bool Input::GetKeyDown(KeyCode key)
 {

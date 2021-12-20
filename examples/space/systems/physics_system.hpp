@@ -22,19 +22,19 @@ namespace ecs
         ~PhysicsSystem() = default;
 
         template <typename T>
-        void update(T &comps)
+        void update(T &manager)
         {
             for (int i = 0; i < m_registered_entities.size(); i++)
             {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                RigidBodyComponent &rigidbody = comps.template get_component<RigidBodyComponent>(entity);
+                TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
+                RigidBodyComponent &rigidbody = manager.template get_component<RigidBodyComponent>(entity);
 
                 transform.position += rigidbody.velocity * Time::delta_time;
 
                 rigidbody.velocity /= 1 + rigidbody.mass * Time::delta_time;
 
-                if (Application::get_manager().has_tag<ecs::EnemyTag>(entity))
+                if (manager.template has_tag<ecs::EnemyTag>(entity))
                 {
                     auto radius = transform.scale.x;
 
@@ -59,7 +59,7 @@ namespace ecs
                         rigidbody.velocity.y *= -1;
                         transform.position.y = -300 + radius;
                     }
-                } else if (Application::get_manager().has_tag<ecs::PlayerTag>(entity)) {
+                } else if (manager.template has_tag<ecs::PlayerTag>(entity)) {
                     if (transform.position.x > 400)
                     {
                         transform.position.x = -400;
