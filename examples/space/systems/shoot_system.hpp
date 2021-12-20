@@ -49,7 +49,7 @@ namespace ecs
                     bullet_rigidbody.velocity = forward * 500.f;
                     bullet_rigidbody.mass = 0;
                     bullet_mesh.VAO = Application::initCircleMesh();
-                    bullet_decay.max_time = 3.0f;
+                    bullet_decay.max_time = 0.8f;
                     bullet_decay.current = 0.f;
                 }
             }
