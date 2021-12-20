@@ -10,7 +10,8 @@
 #include "../components/rigid_body_component.hpp"
 #include "../tags/tags.hpp"
 
-namespace ecs{
+namespace ecs
+{
 
     class MeteorManagerSystem : public BaseSystem<MeteorManagerSystem>
     {
@@ -20,14 +21,14 @@ namespace ecs{
         MeteorManagerSystem() = default;
         ~MeteorManagerSystem() = default;
 
-        template<typename T>
-        void update(T& comps)
+        template <typename T>
+        void update(T &comps)
         {
-            for(EntityID entity : m_registered_entities)
+            for (int i = 0; i < m_registered_entities.size(); i++)
             {
-                
+                auto entity = m_registered_entities[i];
             }
         }
     };
-    
+
 }

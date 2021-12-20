@@ -13,16 +13,18 @@
 
 #include "../shaders.h"
 
-namespace ecs{
+namespace ecs
+{
     class RenderSystem : public BaseSystem<RenderSystem>
     {
     public:
         using Signature = std::tuple<ecs::TransformComponent, ecs::MeshComponent>;
 
-        RenderSystem() {
+        RenderSystem()
+        {
             color = {1.0f, 1.0f, 1.0f};
 
-            //Initialize shaders
+            // Initialize shaders
             vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(vertexShader, 1, &vertexSource, NULL);
             glCompileShader(vertexShader);
@@ -39,19 +41,21 @@ namespace ecs{
             glLinkProgram(shaderProgram);
 
             glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);  
+            glDeleteShader(fragmentShader);
 
             int success;
             char infoLog[512];
             // check for linking errors
             glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-            if (!success) {
+            if (!success)
+            {
                 glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+                std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+                          << infoLog << std::endl;
             }
             glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);  
-            
+            glDeleteShader(fragmentShader);
+
             glUseProgram(shaderProgram);
 
             glm::mat4 projection = glm::mat4(1.0f);
@@ -59,25 +63,25 @@ namespace ecs{
             projection = glm::ortho(-400.0f, 400.0f, -300.0f, 300.0f, -1000.0f, 1000.0f);
 
             glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, &projection[0][0]);
-
         };
-        
+
         ~RenderSystem() = default;
 
-        template<typename T>
-        void update(T& comps)
+        template <typename T>
+        void update(T &comps)
         {
-            for(EntityID entity : m_registered_entities)
+            for (int i = 0; i < m_registered_entities.size(); i++)
             {
-                TransformComponent& transform = comps.template get_component<TransformComponent>(entity);
-                MeshComponent& mesh = comps.template get_component<MeshComponent>(entity);
+                auto entity = m_registered_entities[i];
+                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
+                MeshComponent &mesh = comps.template get_component<MeshComponent>(entity);
 
-                glm::mat4 model          = glm::mat4(1.0f);
-                model       = glm::translate(model, transform.position);
-                model       = glm::scale(model, transform.scale);
-                model       = glm::rotate(model, glm::radians(transform.rotation.x), {1, 0, 0});
-                model       = glm::rotate(model, glm::radians(transform.rotation.y), {0, 1, 0});
-                model       = glm::rotate(model, glm::radians(transform.rotation.z), {0, 0, 1});
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, transform.position);
+                model = glm::scale(model, transform.scale);
+                model = glm::rotate(model, glm::radians(transform.rotation.x), {1, 0, 0});
+                model = glm::rotate(model, glm::radians(transform.rotation.y), {0, 1, 0});
+                model = glm::rotate(model, glm::radians(transform.rotation.z), {0, 0, 1});
 
                 glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, &model[0][0]);
                 glUniform3fv(glGetUniformLocation(shaderProgram, "color"), 1, &color[0]);
@@ -85,13 +89,14 @@ namespace ecs{
                 glDrawElements(GL_TRIANGLES, 90, GL_UNSIGNED_INT, 0);
             }
         }
+
     private:
         GLuint vertexShader;
         GLuint fragmentShader;
         GLuint shaderProgram;
         glm::vec3 color;
 
-        const char* vertexSource = R"glsl(
+        const char *vertexSource = R"glsl(
             #version 330 core
             layout(location = 0) in vec3 position;
 
@@ -104,8 +109,7 @@ namespace ecs{
             }
         )glsl";
 
-
-        const char* fragmentSource = R"glsl(
+        const char *fragmentSource = R"glsl(
             #version 330 core
             uniform vec3 color;
 
@@ -116,8 +120,6 @@ namespace ecs{
                 outColor = vec4(color, 1.0);
             }
         )glsl";
-        
     };
-    
-}
 
+}
