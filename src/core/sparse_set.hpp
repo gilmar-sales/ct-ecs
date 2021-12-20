@@ -5,11 +5,11 @@
 
 namespace ecs
 {
-	template<typename T>
+	template <typename T>
 	class sparse_set
 	{
 	public:
-		sparse_set(unsigned capacity = 512u) 
+		sparse_set(unsigned capacity = 512u)
 		{
 			m_dense.reserve(capacity);
 			m_sparse.resize(capacity);
@@ -18,7 +18,8 @@ namespace ecs
 
 		void insert(T n)
 		{
-			if (contains(n)) return;
+			if (contains(n))
+				return;
 
 			m_sparse[n] = m_dense.size();
 			m_dense.push_back(n);
@@ -27,6 +28,9 @@ namespace ecs
 		}
 		void remove(T n)
 		{
+			if (!contains(n))
+				return;
+
 			m_dense[m_sparse[n]] = m_dense[m_dense.size() - 1];
 			m_sparse[m_dense[m_dense.size() - 1]] = m_sparse[n];
 			m_dense.pop_back();
@@ -43,7 +47,7 @@ namespace ecs
 		{
 			m_dense.clear();
 		}
-		
+
 		void resize(unsigned size)
 		{
 			m_dense.reserve(size);
@@ -52,10 +56,11 @@ namespace ecs
 
 		void sort()
 		{
-			if (m_sorted) return;
+			if (m_sorted)
+				return;
 
 			std::sort(m_dense.begin(), m_dense.end());
-			
+
 			for (T i = 0; i < m_dense.size(); i++)
 			{
 				m_sparse[m_dense[i]] = i;
@@ -64,15 +69,23 @@ namespace ecs
 			m_sorted = true;
 		}
 
-		auto size() {
+		T &operator[](int index)
+		{
+			return m_dense[index];
+		};
+
+		auto size()
+		{
 			return m_dense.size();
 		}
 
-		auto begin() const {
+		auto begin() const
+		{
 			return m_dense.begin();
 		}
 
-		auto end() const {
+		auto end() const
+		{
 			return m_dense.end();
 		}
 
