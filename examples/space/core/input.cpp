@@ -13,6 +13,17 @@ bool Input::GetKeyDown(KeyCode key)
     return key_down;
 }
 
+bool Input::GetKeyUp(KeyCode key)
+{
+    int last_state = keys[key];
+    auto *window = Application::get().get_window().get_native_window();
+    auto state = glfwGetKey(window, static_cast<int>(key));
+    bool key_down = last_state != GLFW_RELEASE && state == GLFW_RELEASE;
+
+    keys[key] = state;
+    return key_down;
+}
+
 bool Input::IsKeyPressed(const KeyCode key)
 {
     auto *window = Application::get().get_window().get_native_window();

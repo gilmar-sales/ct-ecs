@@ -11,6 +11,7 @@ class Input
 {
 public:
 	static bool GetKeyDown(KeyCode key);
+	static bool GetKeyUp(KeyCode key);
 	static bool IsKeyPressed(KeyCode key);
 
 	static bool IsMouseButtonPressed(MouseCode button);
