@@ -10,3 +10,6 @@
 [submodule "dependencies/glm"]
 	path = dependencies/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "tests/dependencies/googletest"]
+	path = tests/dependencies/googletest
+	url = https://github.com/google/googletest.git

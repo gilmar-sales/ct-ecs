@@ -8,7 +8,7 @@ file(GLOB_RECURSE ECS_SRC
     "src/*.hpp"
 )
 
-add_library(ct-ecs 
+add_library(ct-ecs
     ${ECS_SRC}
 )
 
@@ -21,3 +21,4 @@ target_include_directories(ct-ecs INTERFACE
 
 add_subdirectory(examples)
 add_subdirectory(dependencies)
+add_subdirectory(tests)
