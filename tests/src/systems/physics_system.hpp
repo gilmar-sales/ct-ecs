@@ -20,7 +20,7 @@ public:
     {
         for (auto entity : m_registered_entities)
         {
-            std::cout << "[phys]: updating entity " << entity << "\n";
+            //std::cout << "[phys]: updating entity " << entity << "\n";
         }
     }
 };
