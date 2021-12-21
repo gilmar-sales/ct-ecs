@@ -32,7 +32,7 @@ namespace ecs
                 TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
                 RigidBodyComponent &rigidbody = manager.template get_component<RigidBodyComponent>(entity);
 
-                if (Input::IsKeyPressed(Key::Space))
+                if (Input::GetKeyDown(Key::Space))
                 {
                     auto bullet = manager.create_entity();
 
