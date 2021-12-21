@@ -52,8 +52,8 @@ namespace ecs
                 {
                     for (auto collision : collisions) {
                         if (manager.template has_tag<ecs::EnemyTag>(collision.id)) {
-                            manager.template destroy_entity(entity);
-                            manager.template destroy_entity(collision.id);
+                            manager.destroy_entity(entity);
+                            manager.destroy_entity(collision.id);
                         }
                     }
                 }

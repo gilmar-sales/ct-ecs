@@ -32,9 +32,9 @@ namespace ecs
             if (m_registered_entities.size() == 1)
             {
                 for (int i = 0; i < current_wave; i++) {
-                auto ent = manager. template create_entity();
+                auto ent = manager.create_entity();
 
-                manager. template add_tag<ecs::EnemyTag>(ent);
+                manager.add_tag<ecs::EnemyTag>(ent);
 
                 TransformComponent &transform = manager. template add_component<TransformComponent>(ent);
                 RigidBodyComponent &rigidbody = manager. template add_component<RigidBodyComponent>(ent);

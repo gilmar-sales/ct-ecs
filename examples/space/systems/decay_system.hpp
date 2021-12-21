@@ -32,7 +32,7 @@ namespace ecs
                 if (decay.current > decay.max_time)
                 {
                     decay = {0};
-                    manager.template destroy_entity(entity);
+                    manager.destroy_entity(entity);
                 }
             }
         }
