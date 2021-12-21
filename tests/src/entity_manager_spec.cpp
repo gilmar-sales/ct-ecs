@@ -22,7 +22,7 @@ protected:
 };
 
 TEST_F(EntityManagerSpec, SignatureHandleShouldMoveTheLastSignatureAndReset){
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 1000; i++)
     {
         auto entity = manager->create_entity();
 
@@ -36,4 +36,23 @@ TEST_F(EntityManagerSpec, SignatureHandleShouldMoveTheLastSignatureAndReset){
 
     ASSERT_EQ(manager->get_signature(100), last_signature);
     ASSERT_EQ(last_signature_ref, EntityManager::Bitset{"000"});
+}
+
+
+TEST_F(EntityManagerSpec, SignatureHandleShouldOnlyResetSignatureWhenTheEntityIsEqualsOrGreaterTheLastEntity){
+    for (int i = 0; i < 100; i++)
+    {
+        auto entity = manager->create_entity();
+
+        manager->add_component<TransformComponent>(entity);
+    }
+
+    ecs::EntityID last_entity = manager->get_next_entity()-1;
+    ecs::EntityID greater_than_last_entity = 200;
+
+    manager->destroy_entity(last_entity);
+    manager->destroy_entity(greater_than_last_entity);
+
+    ASSERT_EQ(manager->get_signature(last_entity), EntityManager::Bitset{"000"});
+    ASSERT_EQ(manager->get_signature(greater_than_last_entity), EntityManager::Bitset{"000"});
 }

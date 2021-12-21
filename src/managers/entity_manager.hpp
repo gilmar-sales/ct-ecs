@@ -16,12 +16,12 @@ namespace ecs
     template <typename TSettings>
     class EntityManager
     {
+    public:
         using Settings = TSettings;
 
         using Bitset = typename Settings::Bitset;
 
-    public:
-        EntityManager(unsigned int size) : m_next_entity{0}, m_signatures(size) {}
+        explicit EntityManager(unsigned int size = 1024) : m_next_entity{0}, m_signatures(size) {}
         ~EntityManager() = default;
 
         EntityID create_entity()
@@ -31,14 +31,14 @@ namespace ecs
 
         void destroy_entity(EntityID id)
         {
-            if (m_next_entity > 1)
+            if (id >= m_next_entity - 1)
             {
-                m_signatures[id] = m_signatures[m_next_entity - 1];
-                m_signatures[m_next_entity - 1].reset();
+                m_signatures[id].reset();
             }
             else
             {
-                m_signatures[id].reset();
+                m_signatures[id] = m_signatures[m_next_entity - 1];
+                m_signatures[m_next_entity - 1].reset();
             }
             m_next_entity--;
         }
@@ -80,7 +80,7 @@ namespace ecs
             return m_signatures[id][Settings::template tag_bit<T>()];
         }
 
-        const Bitset &get_signature(EntityID id)
+        Bitset &get_signature(EntityID id)
         {
             return m_signatures[id];
         }
