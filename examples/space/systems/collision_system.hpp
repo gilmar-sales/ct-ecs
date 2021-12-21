@@ -64,7 +64,7 @@ namespace ecs
                                 for (int i = 0; i < 4; i++)
                                 {
                                     auto fragment = manager.create_entity();
-                                    manager.add_tag<ecs::EnemyTag>(fragment);
+                                    manager.template add_tag<ecs::EnemyTag>(fragment);
 
                                     TransformComponent &fragment_transform = manager. template add_component<TransformComponent>(fragment);
                                     RigidBodyComponent &fragment_rigidbody = manager. template add_component<RigidBodyComponent>(fragment);

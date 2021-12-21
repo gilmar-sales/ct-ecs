@@ -6,6 +6,7 @@
 #include "../core/time.hpp"
 
 #include "../components/decay_component.hpp"
+#include "../tags/tags.hpp"
 
 class Application;
 
@@ -15,7 +16,7 @@ namespace ecs
     class DecaySystem : public BaseSystem<DecaySystem>
     {
     public:
-        using Signature = std::tuple<ecs::DecayComponent>;
+        using Signature = std::tuple<ecs::DecayComponent, ecs::BulletTag>;
 
         DecaySystem() = default;
         ~DecaySystem() = default;
@@ -31,7 +32,8 @@ namespace ecs
 
                 if (decay.current > decay.max_time)
                 {
-                    decay = {0};
+                    decay.current = 0.f;
+                    decay.max_time = 0.f;
                     manager.destroy_entity(entity);
                 }
             }

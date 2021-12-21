@@ -34,7 +34,7 @@ namespace ecs
                 for (int i = 0; i < current_wave; i++) {
                 auto ent = manager.create_entity();
 
-                manager.add_tag<ecs::EnemyTag>(ent);
+                manager.template add_tag<ecs::EnemyTag>(ent);
 
                 TransformComponent &transform = manager. template add_component<TransformComponent>(ent);
                 RigidBodyComponent &rigidbody = manager. template add_component<RigidBodyComponent>(ent);
