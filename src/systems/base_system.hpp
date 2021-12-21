@@ -35,6 +35,11 @@ namespace ecs
             m_registered_entities.resize(size);
         }
 
+        sparse_set<EntityID>& get_registered_entities()
+        {
+            return m_registered_entities;
+        }
+
     protected:
         sparse_set<EntityID> m_registered_entities;
     };

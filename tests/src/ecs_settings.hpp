@@ -7,12 +7,18 @@
 #include <ecs/ecs.hpp>
 
 #include "tags/player_tag.hpp"
-#include "components/name_component.hpp"
-#include "systems/physics_system.hpp"
+#include "tags/enemy_tag.hpp"
 
-using ComponentList = std::tuple<TransformComponent, NameComponent>;
-using TagList = std::tuple<PlayerTag>;
-using SystemList = std::tuple<PhysicsSystem>;
+#include "components/name_component.hpp"
+#include "components/rigid_body_component.hpp"
+
+#include "systems/physics_system.hpp"
+#include "systems/enemy_movement_system.hpp"
+#include "systems/player_movement_system.hpp"
+
+using ComponentList = std::tuple<TransformComponent, RigidBodyComponent, NameComponent>;
+using TagList = std::tuple<PlayerTag, EnemyTag>;
+using SystemList = std::tuple<PhysicsSystem, EnemyMovementSystem, PlayerMovementSystem>;
 using Settings = ecs::Settings<ComponentList, TagList, SystemList>;
 using ECSManager = ecs::Manager<Settings>;
 #endif //CT_ECS_ECS_SETTINGS_HPP
