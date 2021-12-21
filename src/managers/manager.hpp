@@ -2,6 +2,7 @@
 
 #include "component_manager.hpp"
 #include "entity_manager.hpp"
+#include "../core/sparse_set.hpp"
 
 namespace ecs
 {
@@ -15,6 +16,7 @@ namespace ecs
     template <typename TSettings>
     class Manager
     {
+    public:
         using Settings = TSettings;
 
         using ComponentList = typename Settings::ComponentList;
@@ -25,7 +27,6 @@ namespace ecs
         using SystemsContainer = mp::rename<std::tuple, SystemList>;
         using SignaturesContainer = mp::generate_tuple<Bitset, mp::size_of<SystemList>()>;
 
-    public:
         Manager(unsigned capacity = 1024) : m_entities(capacity), m_components(capacity), m_capacity(capacity)
         {
             initialize_signatures();
@@ -77,6 +78,23 @@ namespace ecs
 
             m_components.move_data(m_entities.get_next_entity() - 1, id);
             m_entities.destroy_entity(id);
+        }
+
+        [[nodiscard]] Bitset& get_entity_signature(EntityID entity)
+        {
+            return m_entities.get_signature(entity);
+        };
+
+        template<typename TSystem>
+        Bitset get_system_signature()
+        {
+            return std::get<mp::index_of<TSystem, SystemList>()>(m_signatures);
+        }
+
+        template<typename TSystem>
+        sparse_set<EntityID>& get_registered_entities()
+        {
+            return std::get<mp::index_of<TSystem, SystemList>()>(m_systems).get_registered_entities();
         }
 
         template <typename T>
