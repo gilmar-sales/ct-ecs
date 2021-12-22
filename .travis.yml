@@ -23,8 +23,8 @@ before_install:
   # To point to the new install
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 60
-  # Install OpenGL
-  - sudo apt-get install libglu1-mesa-dev
+  # Install OpenGL and Others
+  - sudo apt-get install libglu1-mesa-dev xorg-dev
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then export PATH="$PATH:/c/Program Files/CMake/bin"; fi
