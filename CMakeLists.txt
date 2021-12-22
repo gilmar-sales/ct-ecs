@@ -21,4 +21,9 @@ target_include_directories(ct-ecs INTERFACE
 
 add_subdirectory(examples)
 add_subdirectory(dependencies)
+
+option(CT_ECS_BUILD_TESTS "Build all tests." OFF)
+
+if (CT_ECS_BUILD_TESTS)
 add_subdirectory(tests)
+endif()
