@@ -26,21 +26,23 @@ namespace ecs
 
         EntityID create_entity()
         {
+            m_signatures[m_next_entity].reset();
             return m_next_entity++;
         }
 
         void destroy_entity(EntityID id)
         {
-            if (id >= m_next_entity - 1)
+            EntityID last_entity = m_next_entity - 1;
+            if (id >= last_entity)
             {
                 m_signatures[id].reset();
             }
             else
             {
-                m_signatures[id] = m_signatures[m_next_entity - 1];
-                m_signatures[m_next_entity - 1].reset();
+                m_signatures[id] = m_signatures[last_entity];
+                m_signatures[last_entity].reset();
             }
-            m_next_entity--;
+            --m_next_entity;
         }
 
         template <typename T>

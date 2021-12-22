@@ -40,8 +40,10 @@ namespace ecs
 
         EntityID create_entity()
         {
-            if (m_entities.get_next_entity() >= m_capacity)
+            if (get_next_entity() >= m_capacity)
                 resize(m_capacity * 2);
+
+            m_components.reset_components(get_next_entity());
 
             return m_entities.create_entity();
         }
@@ -51,32 +53,34 @@ namespace ecs
         void destroy_entity(EntityID id)
         {
             auto last_entity = m_entities.get_next_entity() - 1;
-            mp::for_tuple([this, id](auto &system)
-                          {
-                              using system_t = std::remove_reference_t<decltype(system)>;
-
-                              auto &sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
-
-                              if ((sys_sig & m_entities.get_signature(id)) == sys_sig)
-                              {
-                                  system.unregister_entity(id);
-                              } },
-                          m_systems);
-
             mp::for_tuple([this, id, last_entity](auto &system)
                           {
                               using system_t = std::remove_reference_t<decltype(system)>;
 
                               auto &sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
 
-                              if ((sys_sig & m_entities.get_signature(last_entity)) == sys_sig)
-                              {
-                                  system.register_entity(id);
-                                  system.unregister_entity(last_entity);
-                              } },
+                              system.unregister_entity(id);
+                              system.unregister_entity(last_entity);
+                          },
                           m_systems);
 
-            m_components.move_data(m_entities.get_next_entity() - 1, id);
+            if (id < last_entity)
+            {
+                mp::for_tuple([this, id, last_entity](auto &system)
+                              {
+                                  using system_t = std::remove_reference_t<decltype(system)>;
+
+                                  auto &sys_sig = std::get<mp::index_of<system_t, SystemList>()>(m_signatures);
+
+                                  if ((sys_sig & m_entities.get_signature(last_entity)) == sys_sig)
+                                  {
+                                      system.register_entity(id);
+                                      system.unregister_entity(last_entity);
+                                  } },
+                              m_systems);
+
+                m_components.move_data(last_entity, id);
+            }
             m_entities.destroy_entity(id);
         }
 
@@ -192,8 +196,11 @@ namespace ecs
         void update()
         {
             mp::for_tuple([this](auto &system)
-                          { system.update(*this); },
-                          m_systems);
+                {
+                    system.get_registered_entities().sort();
+                    system.update(*this);
+                },
+                m_systems);
         }
 
         inline void for_each(std::function<void(EntityID)> function)

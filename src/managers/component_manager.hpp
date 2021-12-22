@@ -45,6 +45,14 @@ namespace ecs
             return std::get<std::vector<T>>(m_vectors)[id];
         }
 
+        void reset_components(EntityID entity)
+        {
+            mp::for_tuple([this, entity] (auto& vector)
+                          {
+                              vector[entity] = {};
+                          }, m_vectors);
+        }
+
         void move_data(EntityID from, EntityID to)
         {
             mp::for_tuple([this, from, to] (auto& vector)
