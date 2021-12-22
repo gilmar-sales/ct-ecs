@@ -1,8 +1,6 @@
 //
 // Created by gilmar on 12/21/21.
 //
-
-
 #include "gtest/gtest.h"
 #include "ecs_settings.hpp"
 
@@ -76,10 +74,8 @@ TEST_F(ECSManagerSpec, SystemsHasRegisteredTheCorrectEntities) {
         manager->destroy_entity(entity);
     }
 
-    std::cout << "players: \n";
     for (auto player : manager->get_registered_entities<PlayerMovementSystem>())
     {
-        std::cout << player << "\n";
         ASSERT_LT(player, 375);
         ASSERT_EQ(std::string(manager->get_component<NameComponent>(player).name), std::string("Player"));
     }
@@ -87,10 +83,8 @@ TEST_F(ECSManagerSpec, SystemsHasRegisteredTheCorrectEntities) {
     ASSERT_GT(manager->get_registered_entities<EnemyMovementSystem>().size(), 0);
     ASSERT_EQ(manager->get_registered_entities<EnemyMovementSystem>().size(), enemies.size());
 
-    std::cout << "enemies: \n";
     for (auto enemy : manager->get_registered_entities<EnemyMovementSystem>())
     {
-        std::cout << enemy << "\n";
         ASSERT_GE(enemy, 375);
         ASSERT_EQ(std::string(manager->get_component<NameComponent>(enemy).name), std::string("Enemy"));
     }
