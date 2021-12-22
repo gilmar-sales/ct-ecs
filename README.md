@@ -1,4 +1,4 @@
-# ct-ecs
+# ct-ecs [![Build Status](https://app.travis-ci.com/gilmarxd/ct-ecs.svg?branch=master)](https://app.travis-ci.com/gilmarxd/ct-ecs)
 header-only compile-time entity component system library
 
 ## Concept
