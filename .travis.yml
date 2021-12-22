@@ -10,10 +10,16 @@ matrix:
     - os: linux
       compiler: gcc
       addons:
-        apt:
-          packages:
-          - g++-9
-          - cmake
+        snaps:
+          - name: cmake
+            confinement: classic
+            channel: latest/candidate
+            
+before_install:
+  # Install gcc-9 and g++-9
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt update
+  - sudo apt-get install gcc-9 g++-9
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then export PATH="$PATH:/c/Program Files/CMake/bin"; fi
