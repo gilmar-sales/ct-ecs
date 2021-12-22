@@ -20,7 +20,6 @@ public:
 
     void run();
     void init_player();
-    void init_meteor_manager();
 
     Window &get_window() { return window; }
 };

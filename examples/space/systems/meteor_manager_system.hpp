@@ -29,7 +29,7 @@ namespace ecs
         template <typename T>
         void update(T &manager)
         {
-            if (m_registered_entities.size() == 1)
+            if (m_registered_entities.size() == 0)
             {
                 for (int i = 0; i < current_wave; i++) {
                 auto ent = manager.create_entity();

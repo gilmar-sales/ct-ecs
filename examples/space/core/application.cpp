@@ -16,8 +16,7 @@ Application::Application() : window("Space", 800, 600), mgr(ECSManager())
     instance = this;
 
     init_player();
-    init_meteor_manager();
-    // glfwSwapInterval(2);
+    glfwSwapInterval(0);
 }
 
 Application::~Application()
@@ -77,9 +76,3 @@ void Application::init_player()
     circle_collider.radius = 10;
 }
 
-void Application::init_meteor_manager() 
-{
-    auto ent = mgr.create_entity();
-
-    mgr.add_tag<ecs::EnemyTag>(ent);
-}
