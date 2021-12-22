@@ -14,19 +14,22 @@ matrix:
           - name: cmake
             confinement: classic
             channel: latest/candidate
-            
+
 before_install:
   # Install gcc-9 and g++-9
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt update
   - sudo apt-get install gcc-9 g++-9
+  # To point to the new install
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 60
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then export PATH="$PATH:/c/Program Files/CMake/bin"; fi
   - mkdir $BUILD_DIR
   - cd $BUILD_DIR
-  - cmake ..
+  - /snap/bin/cmake ..
 
 script:
-  - cmake --build $BUILD_DIR --target space
-  - cmake --build $BUILD_DIR --target Tests_run
+  - /snap/bin/cmake --build $BUILD_DIR --target space
+  - /snap/bin/cmake --build $BUILD_DIR --target Tests_run
