@@ -33,6 +33,7 @@ namespace ecs
 
 			m_dense[m_sparse[n]] = m_dense[m_dense.size() - 1];
 			m_sparse[m_dense[m_dense.size() - 1]] = m_sparse[n];
+            m_sparse[n] = 0;
 			m_dense.pop_back();
 
 			m_sorted = false;
