@@ -12,13 +12,13 @@ matrix:
       addons:
         apt:
           packages:
+          - g++-9
           - cmake
-          - g++
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then export PATH="$PATH:/c/Program Files/CMake/bin"; fi
   - mkdir $BUILD_DIR
-  - cd $BUILD_DIR;
+  - cd $BUILD_DIR
   - cmake ..
 
 script:
