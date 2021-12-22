@@ -37,4 +37,5 @@ before_script:
 script:
   - /snap/bin/cmake --build $BUILD_DIR --target space
   - /snap/bin/cmake --build $BUILD_DIR --target Tests_run
+  - make test
   - ctest
