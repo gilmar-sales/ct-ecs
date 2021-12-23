@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-Window::Window(std::string title, unsigned width, unsigned height): data({title, width, height})
-{
+Window::Window(const std::string &title, int width, int height) : data({title, width, height}) {
     int glfw_status = glfwInit();
 
     if (!glfw_status) {
@@ -26,28 +25,27 @@ Window::Window(std::string title, unsigned width, unsigned height): data({title,
 
     int glad_status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-    if(!glad_status) {
+    if (!glad_status) {
         std::cout << "Couldn't initialize GLAD!\n";
     }
 
     std::cout << glfwGetVersionString() << std::endl;
-    
+
     glViewport(0, 0, width, height);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glfwSetFramebufferSizeCallback(native_window, [](GLFWwindow* native_window, int width, int height) {
-        Window* window = (Window*) glfwGetWindowUserPointer(native_window);
+    glfwSetFramebufferSizeCallback(native_window, [](GLFWwindow *glfw_window, int width, int height) {
+        auto *window = (Window *) glfwGetWindowUserPointer(glfw_window);
         window->update_size(width, height);
     });
 
-    glfwSetWindowCloseCallback(native_window, [](GLFWwindow* native_window) {
-        glfwSetWindowShouldClose(native_window, 1);
+    glfwSetWindowCloseCallback(native_window, [](GLFWwindow *glfw_window) {
+        glfwSetWindowShouldClose(glfw_window, 1);
     });
 }
 
-Window::~Window()
-{
+Window::~Window() {
     glfwDestroyWindow(native_window);
     glfwTerminate();
 }

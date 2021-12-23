@@ -26,8 +26,8 @@ TEST_F(ECSManagerSpec, ManagerInitializeSystemsWithCorrectSignatures) {
 }
 
 TEST_F(ECSManagerSpec, SystemsHasRegisteredTheCorrectEntities) {
-    ecs::sparse_set<ecs::EntityID> players = {2048};
-    ecs::sparse_set<ecs::EntityID> enemies = {2048};
+    SparseSet<ecs::EntityID> players = {2048};
+    SparseSet<ecs::EntityID> enemies = {2048};
 
     for (int i = 0; i < 1000; i++) {
         auto player = manager->create_entity();
@@ -74,8 +74,7 @@ TEST_F(ECSManagerSpec, SystemsHasRegisteredTheCorrectEntities) {
         manager->destroy_entity(entity);
     }
 
-    for (auto player : manager->get_registered_entities<PlayerMovementSystem>())
-    {
+    for (auto player: manager->get_registered_entities<PlayerMovementSystem>()) {
         ASSERT_LT(player, 375);
         ASSERT_EQ(std::string(manager->get_component<NameComponent>(player).name), std::string("Player"));
     }
@@ -83,8 +82,7 @@ TEST_F(ECSManagerSpec, SystemsHasRegisteredTheCorrectEntities) {
     ASSERT_GT(manager->get_registered_entities<EnemyMovementSystem>().size(), 0);
     ASSERT_EQ(manager->get_registered_entities<EnemyMovementSystem>().size(), enemies.size());
 
-    for (auto enemy : manager->get_registered_entities<EnemyMovementSystem>())
-    {
+    for (auto enemy: manager->get_registered_entities<EnemyMovementSystem>()) {
         ASSERT_GE(enemy, 375);
         ASSERT_EQ(std::string(manager->get_component<NameComponent>(enemy).name), std::string("Enemy"));
     }

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPACE_ECS_METEOR_MANAGER_SYSTEM_HPP
+#define SPACE_ECS_METEOR_MANAGER_SYSTEM_HPP
+
 #include <iostream>
 #include <random>
 
@@ -16,64 +18,64 @@
 
 class Application;
 
-namespace ecs
-{
-    class MeteorManagerSystem : public BaseSystem<MeteorManagerSystem>
-    {
+namespace ecs {
+    class MeteorManagerSystem : public BaseSystem<MeteorManagerSystem> {
     public:
         using Signature = std::tuple<ecs::EnemyTag>;
 
         MeteorManagerSystem() = default;
+
         ~MeteorManagerSystem() = default;
 
-        template <typename T>
-        void update(T &manager)
-        {
-            if (m_registered_entities.size() == 0)
-            {
+        template<typename T>
+        void update(T &manager) {
+            if (m_registered_entities.size() == 0) {
                 for (int i = 0; i < current_wave; i++) {
-                auto ent = manager.create_entity();
+                    auto ent = manager.create_entity();
 
-                manager.template add_tag<ecs::EnemyTag>(ent);
+                    manager.template add_tag<ecs::EnemyTag>(ent);
 
-                TransformComponent &transform = manager. template add_component<TransformComponent>(ent);
-                RigidBodyComponent &rigidbody = manager. template add_component<RigidBodyComponent>(ent);
-                MeshComponent &mesh = manager. template add_component<MeshComponent>(ent);
-                CircleColliderComponent &collider = manager. template add_component<CircleColliderComponent>(ent);
+                    TransformComponent &transform = manager.template add_component<TransformComponent>(ent);
+                    RigidBodyComponent &rigidbody = manager.template add_component<RigidBodyComponent>(ent);
+                    MeshComponent &mesh = manager.template add_component<MeshComponent>(ent);
+                    CircleColliderComponent &collider = manager.template add_component<CircleColliderComponent>(ent);
 
-                std::random_device rd; // obtain a random number from hardware
-                std::mt19937 gen(rd()); // seed the generator
-                std::uniform_int_distribution<> distrPos(-400, 400); // define the range
-                std::uniform_int_distribution<> distrScale(10, 50); // define the rangev
-                std::uniform_int_distribution<> distrAngle(0, 360); // define the rangev
-                
-                float x = distrPos(gen);
-                float y = distrPos(gen);
+                    std::random_device rd; // obtain a random number from hardware
+                    std::mt19937 gen(rd()); // seed the generator
+                    std::uniform_int_distribution<> distrPos(-400, 400); // define the range
+                    std::uniform_int_distribution<> distrScale(10, 50); // define the rangev
+                    std::uniform_int_distribution<> distrAngle(0, 360); // define the rangev
 
-                float angle = distrAngle(gen);
+                    auto x = (float) distrPos(gen);
+                    auto y = (float) distrPos(gen);
 
-                float speed = distrScale(gen);
-                float size = distrScale(gen);
+                    auto angle = (float) distrAngle(gen);
 
-                transform.position = {x, y, 0};
-                transform.rotation = {0,0, angle};
-                transform.scale = {size, size, size};
-                
-                rigidbody.velocity = glm::normalize(glm::vec3(x, y, 0)) * speed;
-                rigidbody.mass = 0.f;
+                    auto speed = (float) distrScale(gen);
+                    auto size = (float) distrScale(gen);
 
-                mesh.VAO = MeshAsset::initCircleMesh();
-                collider.radius = size;
-            }
+                    transform.position = {x, y, 0};
+                    transform.rotation = {0, 0, angle};
+                    transform.scale = {size, size, size};
 
-            int previous_wave = current_wave;
-            current_wave = next_wave;
-            next_wave += previous_wave;
+                    rigidbody.velocity = glm::normalize(glm::vec3(x, y, 0)) * speed;
+                    rigidbody.mass = 0.f;
+
+                    mesh.VAO = MeshAsset::get_circle_mesh();
+                    collider.radius = size;
+                }
+
+                int previous_wave = current_wave;
+                current_wave = next_wave;
+                next_wave += previous_wave;
             }
         }
+
     private:
         int current_wave = 5;
         int next_wave = 8;
     };
 
-}
+} // namespace ecs
+
+#endif // SPACE_ECS_METEOR_MANAGER_SYSTEM_HPP

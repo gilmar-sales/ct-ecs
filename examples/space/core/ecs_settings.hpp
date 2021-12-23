@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPACE_ECS_SETTINGS_HPP
+#define SPACE_ECS_SETTINGS_HPP
 
 #include <ecs/ecs.hpp>
 
@@ -17,3 +18,5 @@ using TagList = std::tuple<ecs::PlayerTag, ecs::EnemyTag, ecs::BulletTag>;
 using SystemList = std::tuple<ecs::PhysicsSystem, ecs::RenderSystem, ecs::PlayerMoveSystem, ecs::MeteorManagerSystem, ecs::ShootSystem, ecs::DecaySystem, ecs::CollisionSystem, ecs::PlayerSystem>;
 using Settings = ecs::Settings<ComponentList, TagList, SystemList>;
 using ECSManager = ecs::Manager<Settings>;
+
+#endif // SPACE_ECS_SETTINGS_HPP

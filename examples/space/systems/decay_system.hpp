@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPACE_ECS_DECAY_SYSTEM_HPP
+#define SPACE_ECS_DECAY_SYSTEM_HPP
+
 #include <iostream>
 
 #include <ecs/ecs.hpp>
@@ -10,28 +12,24 @@
 
 class Application;
 
-namespace ecs
-{
+namespace ecs {
 
-    class DecaySystem : public BaseSystem<DecaySystem>
-    {
+    class DecaySystem : public BaseSystem<DecaySystem> {
     public:
         using Signature = std::tuple<ecs::DecayComponent, ecs::BulletTag>;
 
         DecaySystem() = default;
+
         ~DecaySystem() = default;
 
-        template <typename T>
-        void update(T &manager)
-        {
-            for (int i = 0; i < m_registered_entities.size(); i++)
-            {
+        template<typename T>
+        void update(T &manager) {
+            for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
                 DecayComponent &decay = manager.template get_component<DecayComponent>(entity);
                 decay.current += Time::delta_time;
 
-                if (decay.current > decay.max_time)
-                {
+                if (decay.current > decay.max_time) {
                     decay.current = 0.f;
                     decay.max_time = 0.f;
                     manager.destroy_entity(entity);
@@ -40,4 +38,6 @@ namespace ecs
         }
     };
 
-}
+} // namespace ecs
+
+#endif // SPACE_ECS_DECAY_SYSTEM_HPP

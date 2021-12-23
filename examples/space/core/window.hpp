@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPACE_WINDOW_HPP
+#define SPACE_WINDOW_HPP
 
 #include <string>
 #include <iostream>
@@ -8,26 +9,31 @@
 
 struct WindowData {
     std::string title;
-    unsigned width;
-    unsigned height;
+    int width;
+    int height;
 };
 
-class Window
-{
+class Window {
 public:
-    Window(std::string title, unsigned width, unsigned height);
+    Window(const std::string &title, int width, int height);
+
     ~Window();
 
-    GLFWwindow* get_native_window() { return native_window; }
-    
-    unsigned get_window_width() { return data.width; }
-    unsigned get_window_height() { return data.height; }
-    std::string get_title() { return data.title; }
-    
+    GLFWwindow *get_native_window() { return native_window; }
+
+    int get_window_width() { return data.width; }
+
+    int get_window_height() { return data.height; }
+
+    std::string get_title() const { return data.title; }
+
     void update();
+
 private:
     WindowData data;
-    GLFWwindow* native_window;
+    GLFWwindow *native_window;
 
     void update_size(int width, int height);
 };
+
+#endif // SPACE_WINDOW_HPP

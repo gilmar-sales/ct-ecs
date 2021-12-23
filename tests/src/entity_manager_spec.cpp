@@ -6,11 +6,9 @@
 
 using EntityManager = ecs::EntityManager<Settings>;
 
-class EntityManagerSpec : public ::testing::Test
-{
+class EntityManagerSpec : public ::testing::Test {
 protected:
-    virtual void SetUp()
-    {
+    virtual void SetUp() {
         manager = new EntityManager(10000);
     }
 
@@ -18,18 +16,17 @@ protected:
         delete manager;
     }
 
-    EntityManager * manager;
+    EntityManager *manager;
 };
 
-TEST_F(EntityManagerSpec, SignatureHandleShouldMoveTheLastSignatureAndReset){
-    for (int i = 0; i < 1000; i++)
-    {
+TEST_F(EntityManagerSpec, SignatureHandleShouldMoveTheLastSignatureAndReset) {
+    for (int i = 0; i < 1000; i++) {
         auto entity = manager->create_entity();
 
         manager->add_component<TransformComponent>(entity);
     }
 
-    auto& last_signature_ref = manager->get_signature(manager->get_next_entity()-1);
+    auto &last_signature_ref = manager->get_signature(manager->get_next_entity() - 1);
     auto last_signature = last_signature_ref;
 
     manager->destroy_entity(100);
@@ -39,15 +36,14 @@ TEST_F(EntityManagerSpec, SignatureHandleShouldMoveTheLastSignatureAndReset){
 }
 
 
-TEST_F(EntityManagerSpec, SignatureHandleShouldOnlyResetSignatureWhenTheEntityIsEqualsOrGreaterTheLastEntity){
-    for (int i = 0; i < 100; i++)
-    {
+TEST_F(EntityManagerSpec, SignatureHandleShouldOnlyResetSignatureWhenTheEntityIsEqualsOrGreaterTheLastEntity) {
+    for (int i = 0; i < 100; i++) {
         auto entity = manager->create_entity();
 
         manager->add_component<TransformComponent>(entity);
     }
 
-    ecs::EntityID last_entity = manager->get_next_entity()-1;
+    ecs::EntityID last_entity = manager->get_next_entity() - 1;
     ecs::EntityID greater_than_last_entity = 200;
 
     manager->destroy_entity(last_entity);

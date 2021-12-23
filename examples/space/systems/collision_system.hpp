@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPACE_ECS_COLLISION_SYSTEM_HPP
+#define SPACE_ECS_COLLISION_SYSTEM_HPP
+
 #include <iostream>
 #include <tuple>
 
@@ -15,43 +17,38 @@
 
 class Application;
 
-namespace ecs
-{
-    class CollisionSystem : public BaseSystem<CollisionSystem>
-    {
+namespace ecs {
+    class CollisionSystem : public BaseSystem<CollisionSystem> {
     public:
         using Signature = std::tuple<ecs::TransformComponent, ecs::RigidBodyComponent, ecs::CircleColliderComponent>;
 
         CollisionSystem() = default;
+
         ~CollisionSystem() = default;
 
-        template <typename T>
-        void update(T &manager)
-        {
-            QuadTree quadtree = QuadTree(glm::vec2(0,0), 400.f, 4);
-            
-            for (int i = 0; i < m_registered_entities.size(); i++)
-            {
+        template<typename T>
+        void update(T &manager) {
+            QuadTree quadtree = QuadTree(glm::vec2(0, 0), 400.f, 4);
+
+            for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
                 TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
                 CircleColliderComponent &collider = manager.template get_component<CircleColliderComponent>(entity);
                 quadtree.insert({entity, glm::vec2(transform.position.x, transform.position.y), collider.radius});
             }
 
-            for (int i = 0; i < m_registered_entities.size(); i++)
-            {
+            for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
                 TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
                 RigidBodyComponent &rigidbody = manager.template get_component<RigidBodyComponent>(entity);
                 CircleColliderComponent &collider = manager.template get_component<CircleColliderComponent>(entity);
-                
+
                 Entity ent = {entity, glm::vec2(transform.position.x, transform.position.y), collider.radius};
                 std::vector<Entity> collisions = std::vector<Entity>();
                 quadtree.query(ent, &collisions);
 
-                if (manager.template has_tag<ecs::BulletTag>(entity)) 
-                {
-                    for (auto collision : collisions) {
+                if (manager.template has_tag<ecs::BulletTag>(entity)) {
+                    for (auto collision: collisions) {
                         if (manager.template has_tag<ecs::EnemyTag>(collision.id)) {
                             manager.destroy_entity(entity);
 
@@ -60,8 +57,10 @@ namespace ecs
 
                             float new_radius = collision.radius / 2.f;
                             if (new_radius > 10) {
-                                TransformComponent &meteor_transform = manager.template get_component<TransformComponent>(collision.id);
-                                CircleColliderComponent &meteor_collider = manager.template get_component<CircleColliderComponent>(collision.id);
+                                TransformComponent &meteor_transform = manager.template get_component<TransformComponent>(
+                                        collision.id);
+                                CircleColliderComponent &meteor_collider = manager.template get_component<CircleColliderComponent>(
+                                        collision.id);
 
                                 meteor_transform.scale = {new_radius, new_radius, new_radius};
                                 meteor_collider.radius = new_radius;
@@ -71,7 +70,7 @@ namespace ecs
                         }
                     }
                 } else if (manager.template has_tag<ecs::PlayerTag>(entity)) {
-                    for (auto collision : collisions) {
+                    for (auto collision: collisions) {
                         if (manager.template has_tag<ecs::EnemyTag>(collision.id)) {
                             manager.destroy_entity(collision.id);
 
@@ -85,4 +84,6 @@ namespace ecs
         }
     };
 
-}
+} // namespace ecs
+
+#endif // SPACE_ECS_COLLISION_SYSTEM_HPP

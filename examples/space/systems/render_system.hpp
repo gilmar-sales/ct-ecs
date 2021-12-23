@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPACE_ECS_RENDER_SYSTEM_HPP
+#define SPACE_ECS_RENDER_SYSTEM_HPP
+
 #include <iostream>
 #include <tuple>
 
@@ -13,25 +15,21 @@
 
 #include "../shaders.h"
 
-namespace ecs
-{
-    class RenderSystem : public BaseSystem<RenderSystem>
-    {
+namespace ecs {
+    class RenderSystem : public BaseSystem<RenderSystem> {
     public:
         using Signature = std::tuple<ecs::TransformComponent, ecs::MeshComponent>;
 
-        RenderSystem()
-        {
-            color = {1.0f, 1.0f, 1.0f};
+        RenderSystem(): color(1.0f, 1.0f, 1.0f) {
 
             // Initialize shaders
             vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, 1, &vertexSource, NULL);
+            glShaderSource(vertexShader, 1, &vertexSource, nullptr);
             glCompileShader(vertexShader);
             checkShader(vertexShader);
 
             fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+            glShaderSource(fragmentShader, 1, &fragmentSource, nullptr);
             glCompileShader(fragmentShader);
             checkShader(fragmentShader);
 
@@ -47,9 +45,8 @@ namespace ecs
             char infoLog[512];
             // check for linking errors
             glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-            if (!success)
-            {
-                glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+            if (!success) {
+                glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
                 std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
                           << infoLog << std::endl;
             }
@@ -67,11 +64,9 @@ namespace ecs
 
         ~RenderSystem() = default;
 
-        template <typename T>
-        void update(T &comps)
-        {
-            for (int i = 0; i < m_registered_entities.size(); i++)
-            {
+        template<typename T>
+        void update(T &comps) {
+            for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
                 TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
                 MeshComponent &mesh = comps.template get_component<MeshComponent>(entity);
@@ -86,7 +81,7 @@ namespace ecs
                 glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, &model[0][0]);
                 glUniform3fv(glGetUniformLocation(shaderProgram, "color"), 1, &color[0]);
                 glBindVertexArray(mesh.VAO);
-                glDrawElements(GL_TRIANGLES, 90, GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, 90, GL_UNSIGNED_INT, nullptr);
             }
         }
 
@@ -122,4 +117,6 @@ namespace ecs
         )glsl";
     };
 
-}
+} // namespace ecs
+
+#endif

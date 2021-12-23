@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPACE_QUADTREE_HPP
+#define SPACE_QUADTREE_HPP
 
 #include <vector>
 #include <functional>
@@ -17,18 +18,25 @@ struct Entity {
 class QuadTree {
 public:
     QuadTree(glm::vec2 position, float half_range, unsigned capacity);
+
     ~QuadTree() = default;
 
     bool insert(Entity entity);
+
     void subdivide();
-    void query(Entity entity, std::vector<Entity>* found);
+
+    void query(Entity entity, std::vector<Entity> *found);
+
     bool contains(Entity entity);
+
     bool collide(Entity first, Entity second);
+
     bool intersect(Entity entity);
+
     void draw(unsigned vao, unsigned shaderProgram);
 
 private:
-    glm::vec2 m_position;
+    glm::vec2 m_position{};
     float m_half_range;
     std::vector<Entity> m_elements;
     unsigned m_capacity;
@@ -38,3 +46,5 @@ private:
     std::unique_ptr<QuadTree> m_bot_left;
     std::unique_ptr<QuadTree> m_bot_right;
 };
+
+#endif

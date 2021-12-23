@@ -2,9 +2,10 @@
 // Created by gilmar on 12/21/21.
 //
 
-#ifndef CT_ECS_PLAYER_TAG_HPP
-#define CT_ECS_PLAYER_TAG_HPP
+#ifndef PLAYER_TAG_HPP
+#define PLAYER_TAG_HPP
 
-struct PlayerTag { };
+struct PlayerTag {
+};
 
-#endif //CT_ECS_PLAYER_TAG_HPP
+#endif //PLAYER_TAG_HPP

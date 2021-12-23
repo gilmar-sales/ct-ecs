@@ -2,8 +2,9 @@
 // Created by gilmar on 12/21/21.
 //
 
-#ifndef CT_ECS_ECS_SETTINGS_HPP
-#define CT_ECS_ECS_SETTINGS_HPP
+#ifndef ECS_SETTINGS_HPP
+#define ECS_SETTINGS_HPP
+
 #include <ecs/ecs.hpp>
 
 #include "tags/player_tag.hpp"
@@ -21,4 +22,5 @@ using TagList = std::tuple<PlayerTag, EnemyTag>;
 using SystemList = std::tuple<PhysicsSystem, EnemyMovementSystem, PlayerMovementSystem>;
 using Settings = ecs::Settings<ComponentList, TagList, SystemList>;
 using ECSManager = ecs::Manager<Settings>;
-#endif //CT_ECS_ECS_SETTINGS_HPP
+
+#endif //CT_ECS_SETTINGS_HPP

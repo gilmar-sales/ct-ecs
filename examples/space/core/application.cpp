@@ -4,14 +4,14 @@
 #include <sstream>
 
 #define GLM_ENABLE_EXPERIMENTAL
+
 #include <glm/glm.hpp>
 
 #include "../tags/tags.hpp"
 
 Application *Application::instance = nullptr;
 
-Application::Application() : window("Space", 800, 600), mgr(ECSManager())
-{
+Application::Application() : window("Space", 800, 600), mgr(ECSManager()) {
     assert(!instance);
     instance = this;
 
@@ -19,17 +19,11 @@ Application::Application() : window("Space", 800, 600), mgr(ECSManager())
     glfwSwapInterval(0);
 }
 
-Application::~Application()
-{
-}
-
-void Application::run()
-{
+void Application::run() {
     float previous_time = glfwGetTime();
     float frametime_accumulator = 0;
     float frames = 0;
-    while (!glfwWindowShouldClose(window.get_native_window()))
-    {
+    while (!glfwWindowShouldClose(window.get_native_window())) {
 
         float now = glfwGetTime();
         Time::delta_time = now - previous_time;
@@ -38,13 +32,12 @@ void Application::run()
         frametime_accumulator += Time::delta_time;
         frames += 1;
 
-        if (frametime_accumulator >= 1)
-        {
-            if (get_manager().get_next_entity())
-            {
+        if (frametime_accumulator >= 1) {
+            if (get_manager().get_next_entity()) {
                 auto &player = mgr.add_component<ecs::PlayerComponent>(0);
                 std::stringstream ss;
-                ss << window.get_title() << " - " << frames << " FPS"<< " - Lifes: " << player.lifes << " - Score: " << player.score  << " - Entities: ";
+                ss << window.get_title() << " - " << frames << " FPS" << " - Lifes: " << player.lifes << " - Score: "
+                   << player.score << " - Entities: ";
                 ss << mgr.get_next_entity();
 
                 glfwSetWindowTitle(window.get_native_window(), ss.str().c_str());
@@ -61,8 +54,7 @@ void Application::run()
     }
 }
 
-void Application::init_player()
-{
+void Application::init_player() {
 
     auto ent = mgr.create_entity();
 
@@ -77,7 +69,7 @@ void Application::init_player()
     transform.scale = {20, 20, 20};
     transform.rotation = {0, 0, 0};
 
-    mesh.VAO = MeshAsset::initTriangleMesh();
+    mesh.VAO = MeshAsset::get_triangle_mesh();
     rigidbody.mass = 2;
     circle_collider.radius = 10;
     life.lifes = 4;

@@ -1,98 +1,87 @@
-#pragma once
+#ifndef SPARSE_SET_HPP
+#define SPARSE_SET_HPP
 
 #include <vector>
 #include <algorithm>
 
-namespace ecs
-{
-	template <typename T>
-	class sparse_set
-	{
-	public:
-		sparse_set(unsigned capacity = 512u)
-		{
-			m_dense.reserve(capacity);
-			m_sparse.resize(capacity);
-		}
-		~sparse_set() = default;
+template<typename T>
+class SparseSet {
+public:
+    SparseSet(unsigned capacity = 512u) {
+        m_dense.reserve(capacity);
+        m_sparse.resize(capacity);
+    }
 
-		void insert(T n)
-		{
-			if (contains(n))
-				return;
+    ~SparseSet() = default;
 
-			m_sparse[n] = m_dense.size();
-			m_dense.push_back(n);
+    void insert(T n) {
+        if (contains(n))
+            return;
 
-			m_sorted = false;
-		}
-		void remove(T n)
-		{
-			if (!contains(n))
-				return;
+        m_sparse[n] = m_dense.size();
+        m_dense.push_back(n);
 
-			m_dense[m_sparse[n]] = m_dense[m_dense.size() - 1];
-			m_sparse[m_dense[m_dense.size() - 1]] = m_sparse[n];
-            m_sparse[n] = 0;
-			m_dense.pop_back();
+        m_sorted = false;
+    }
 
-			m_sorted = false;
-		}
+    void remove(T n) {
+        if (!contains(n))
+            return;
 
-		inline bool contains(T n) const
-		{
-			return m_sparse[n] < m_dense.size() && m_dense[m_sparse[n]] == n;
-		}
+        m_dense[m_sparse[n]] = m_dense[m_dense.size() - 1];
+        m_sparse[m_dense[m_dense.size() - 1]] = m_sparse[n];
+        m_sparse[n] = 0;
+        m_dense.pop_back();
 
-		inline void clear()
-		{
-			m_dense.clear();
-		}
+        m_sorted = false;
+    }
 
-		void resize(unsigned size)
-		{
-			m_dense.reserve(size);
-			m_sparse.resize(size);
-		}
+    inline bool contains(T n) const {
+        return m_sparse[n] < m_dense.size() && m_dense[m_sparse[n]] == n;
+    }
 
-		void sort()
-		{
-			if (m_sorted)
-				return;
+    inline void clear() {
+        m_dense.clear();
+    }
 
-			std::sort(m_dense.begin(), m_dense.end());
+    void resize(unsigned size) {
+        m_dense.reserve(size);
+        m_sparse.resize(size);
+    }
 
-			for (T i = 0; i < m_dense.size(); i++)
-			{
-				m_sparse[m_dense[i]] = i;
-			}
+    void sort() {
+        if (m_sorted)
+            return;
 
-			m_sorted = true;
-		}
+        std::sort(m_dense.begin(), m_dense.end());
 
-		T &operator[](int index)
-		{
-			return m_dense[index];
-		};
+        for (T i = 0; i < m_dense.size(); i++) {
+            m_sparse[m_dense[i]] = i;
+        }
 
-		auto size()
-		{
-			return m_dense.size();
-		}
+        m_sorted = true;
+    }
 
-		auto begin() const
-		{
-			return m_dense.begin();
-		}
+    T &operator[](int index) {
+        return m_dense[index];
+    };
 
-		auto end() const
-		{
-			return m_dense.end();
-		}
+    auto size() {
+        return m_dense.size();
+    }
 
-	private:
-		std::vector<T> m_dense;
-		std::vector<T> m_sparse;
-		bool m_sorted;
-	};
-}
+    auto begin() const {
+        return m_dense.begin();
+    }
+
+    auto end() const {
+        return m_dense.end();
+    }
+
+private:
+    std::vector<T> m_dense;
+    std::vector<T> m_sparse;
+    bool m_sorted;
+};
+
+#endif
