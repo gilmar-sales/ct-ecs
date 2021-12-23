@@ -40,10 +40,15 @@ void Application::run()
 
         if (frametime_accumulator >= 1)
         {
-            std::stringstream ss;
-            ss << window.get_title() << " - " << frames << " FPS - Entities: ";
-            ss << mgr.get_next_entity();
-            glfwSetWindowTitle(window.get_native_window(), ss.str().c_str());
+            if (get_manager().get_next_entity())
+            {
+                auto &player = mgr.add_component<ecs::PlayerComponent>(0);
+                std::stringstream ss;
+                ss << window.get_title() << " - " << frames << " FPS"<< " - Lifes: " << player.lifes << " - Score: " << player.score  << " - Entities: ";
+                ss << mgr.get_next_entity();
+
+                glfwSetWindowTitle(window.get_native_window(), ss.str().c_str());
+            }
 
             frametime_accumulator = 0;
             frames = 0;
@@ -61,10 +66,11 @@ void Application::init_player()
 
     auto ent = mgr.create_entity();
 
-    ecs::TransformComponent &transform = mgr.add_component<ecs::TransformComponent>(ent);
-    ecs::MeshComponent &mesh = mgr.add_component<ecs::MeshComponent>(ent);
-    ecs::RigidBodyComponent &rigidbody = mgr.add_component<ecs::RigidBodyComponent>(ent);
-    ecs::CircleColliderComponent &circle_collider = mgr.add_component<ecs::CircleColliderComponent>(ent);
+    auto &transform = mgr.add_component<ecs::TransformComponent>(ent);
+    auto &mesh = mgr.add_component<ecs::MeshComponent>(ent);
+    auto &rigidbody = mgr.add_component<ecs::RigidBodyComponent>(ent);
+    auto &circle_collider = mgr.add_component<ecs::CircleColliderComponent>(ent);
+    auto &life = mgr.add_component<ecs::PlayerComponent>(ent);
     mgr.add_tag<ecs::PlayerTag>(ent);
 
     transform.position = {0, 0, 0};
@@ -74,5 +80,6 @@ void Application::init_player()
     mesh.VAO = MeshAsset::initTriangleMesh();
     rigidbody.mass = 2;
     circle_collider.radius = 10;
+    life.lifes = 4;
 }
 
