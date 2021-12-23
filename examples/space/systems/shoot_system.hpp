@@ -10,6 +10,7 @@
 #include "../components/transform_component.hpp"
 #include "../components/rigid_body_component.hpp"
 #include "../components/decay_component.hpp"
+#include "../components/bullet_component.hpp"
 #include "../tags/tags.hpp"
 
 namespace ecs
@@ -41,6 +42,7 @@ namespace ecs
                     MeshComponent &bullet_mesh = manager.template add_component<MeshComponent>(bullet);
                     DecayComponent &bullet_decay = manager.template add_component<DecayComponent>(bullet);
                     CircleColliderComponent &bullet_collider = manager.template add_component<CircleColliderComponent>(bullet);
+                    BulletComponent &bullet_comp = manager.template add_component<BulletComponent>(bullet);
                     manager.template add_tag<BulletTag>(bullet);
                     glm::vec3 forward = transform.get_forward_direction();
 
@@ -52,6 +54,7 @@ namespace ecs
                     bullet_decay.max_time = 0.8f;
                     bullet_decay.current = 0.f;
                     bullet_collider.radius = 5;
+                    bullet_comp.owner = entity;
                 }
             }
         }
