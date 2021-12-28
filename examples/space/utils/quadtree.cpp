@@ -27,21 +27,27 @@ bool QuadTree::insert(Entity entity) {
         subdivide();
     }
 
-    return (
-            m_top_left->insert(entity) ||
-            m_top_right->insert(entity) ||
-            m_bot_left->insert(entity) ||
-            m_bot_right->insert(entity)
-    );
+    if (entity.position.x < m_position.x) {
+        if (entity.position.y < m_position.y) {
+            return m_bot_left->insert(entity);
+        }
+        return m_top_left->insert(entity);
+    }
+
+    if (entity.position.y < m_position.y) {
+        return m_bot_right->insert(entity);
+    }
+
+    return m_top_right->insert(entity);
 }
 
 void QuadTree::subdivide() {
     float half_range = m_half_range / 2;
 
-    glm::vec2 top_left_pos = m_position - half_range;
-    glm::vec2 top_right_pos = {m_position.x + half_range, m_position.y - half_range};
-    glm::vec2 bot_left_pos = {m_position.x - half_range, m_position.y + half_range};
-    glm::vec2 bot_right_pos = m_position + half_range;
+    glm::vec2 top_left_pos = {m_position.x-half_range, m_position.y+half_range};
+    glm::vec2 top_right_pos = {m_position.x+half_range, m_position.y+half_range};
+    glm::vec2 bot_left_pos = {m_position.x-half_range, m_position.y-half_range};
+    glm::vec2 bot_right_pos = {m_position.x+half_range, m_position.y-half_range};
 
     m_top_left = std::make_unique<QuadTree>(top_left_pos, half_range, m_capacity);
     m_top_right = std::make_unique<QuadTree>(top_right_pos, half_range, m_capacity);
