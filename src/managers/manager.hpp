@@ -92,6 +92,11 @@ namespace ecs {
         }
 
         template<typename T>
+        bool has_component(EntityID id) {
+            return m_entities.template has_component<T>(id);
+        }
+
+        template<typename T>
         T &get_component(EntityID id) {
             return m_components.template get_component<T>(id);
         }
