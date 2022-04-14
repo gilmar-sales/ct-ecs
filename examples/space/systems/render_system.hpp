@@ -64,12 +64,12 @@ namespace ecs {
 
         ~RenderSystem() = default;
 
-        template<typename T>
-        void update(T &comps) {
+        template<typename Settings>
+        void update(Manager<Settings>* manager) {
             for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                MeshComponent &mesh = comps.template get_component<MeshComponent>(entity);
+                TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
+                MeshComponent &mesh = manager->template get_component<MeshComponent>(entity);
 
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, transform.position);

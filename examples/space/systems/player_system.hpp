@@ -16,9 +16,10 @@
 #include "../components/player_component.hpp"
 #include "../components/transform_component.hpp"
 #include "../tags/tags.hpp"
+#include "../events/game_events.hpp"
 
 namespace ecs {
-    class PlayerSystem : public BaseSystem<PlayerSystem> {
+    class PlayerSystem : public BaseSystem<PlayerSystem, std::tuple<MeteorManagerSystem>> {
     public:
         using Signature = std::tuple<ecs::PlayerTag, ecs::PlayerComponent, ecs::TransformComponent>;
 
@@ -26,14 +27,15 @@ namespace ecs {
 
         ~PlayerSystem() = default;
 
-        template<typename T>
-        void update(T &comps) {
+        template<typename Settings>
+        void update(Manager<Settings>* manager) {
             for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                PlayerComponent &player = comps.template get_component<PlayerComponent>(entity);
+                TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
+                PlayerComponent &player = manager->template get_component<PlayerComponent>(entity);
 
                 if (player.lifes <= 0) {
+                    notify(manager, PlayerEndGameEvent{});
                     transform.position = {0.f, 0.f, 0.f};
                     player.lifes = 4;
                     player.score = 0;

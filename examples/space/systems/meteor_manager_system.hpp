@@ -27,18 +27,18 @@ namespace ecs {
 
         ~MeteorManagerSystem() = default;
 
-        template<typename T>
-        void update(T &manager) {
+        template<typename Settings>
+        void update(Manager<Settings>* manager) {
             if (m_registered_entities.size() == 0) {
                 for (int i = 0; i < current_wave; i++) {
-                    auto ent = manager.create_entity();
+                    auto ent = manager->create_entity();
 
-                    manager.template add_tag<ecs::EnemyTag>(ent);
+                    manager->template add_tag<ecs::EnemyTag>(ent);
 
-                    TransformComponent &transform = manager.template add_component<TransformComponent>(ent);
-                    RigidBodyComponent &rigidbody = manager.template add_component<RigidBodyComponent>(ent);
-                    MeshComponent &mesh = manager.template add_component<MeshComponent>(ent);
-                    CircleColliderComponent &collider = manager.template add_component<CircleColliderComponent>(ent);
+                    TransformComponent &transform = manager->template add_component<TransformComponent>(ent);
+                    RigidBodyComponent &rigidbody = manager->template add_component<RigidBodyComponent>(ent);
+                    MeshComponent &mesh = manager->template add_component<MeshComponent>(ent);
+                    CircleColliderComponent &collider = manager->template add_component<CircleColliderComponent>(ent);
 
                     std::random_device rd; // obtain a random number from hardware
                     std::mt19937 gen(rd()); // seed the generator

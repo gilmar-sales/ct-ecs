@@ -25,24 +25,24 @@ namespace ecs {
 
         ~ShootSystem() = default;
 
-        template<typename T>
-        void update(T &manager) {
+        template<typename Settings>
+        void update(Manager<Settings>* manager) {
             for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = manager.template get_component<TransformComponent>(entity);
-                RigidBodyComponent &rigidbody = manager.template get_component<RigidBodyComponent>(entity);
+                TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
+                RigidBodyComponent &rigidbody = manager->template get_component<RigidBodyComponent>(entity);
 
                 if (Input::GetKeyDown(Key::Space)) {
-                    auto bullet = manager.create_entity();
+                    auto bullet = manager->create_entity();
 
-                    TransformComponent &bullet_transform = manager.template add_component<TransformComponent>(bullet);
-                    RigidBodyComponent &bullet_rigidbody = manager.template add_component<RigidBodyComponent>(bullet);
-                    MeshComponent &bullet_mesh = manager.template add_component<MeshComponent>(bullet);
-                    DecayComponent &bullet_decay = manager.template add_component<DecayComponent>(bullet);
-                    CircleColliderComponent &bullet_collider = manager.template add_component<CircleColliderComponent>(
+                    TransformComponent &bullet_transform = manager->template add_component<TransformComponent>(bullet);
+                    RigidBodyComponent &bullet_rigidbody = manager->template add_component<RigidBodyComponent>(bullet);
+                    MeshComponent &bullet_mesh = manager->template add_component<MeshComponent>(bullet);
+                    DecayComponent &bullet_decay = manager->template add_component<DecayComponent>(bullet);
+                    CircleColliderComponent &bullet_collider = manager->template add_component<CircleColliderComponent>(
                             bullet);
-                    BulletComponent &bullet_comp = manager.template add_component<BulletComponent>(bullet);
-                    manager.template add_tag<BulletTag>(bullet);
+                    BulletComponent &bullet_comp = manager->template add_component<BulletComponent>(bullet);
+                    manager->template add_tag<BulletTag>(bullet);
                     glm::vec3 forward = transform.get_forward_direction();
 
                     bullet_transform.position = transform.position + forward * 5.f;

@@ -23,12 +23,12 @@ namespace ecs {
 
         ~PlayerMoveSystem() = default;
 
-        template<typename T>
-        void update(T &comps) {
+        template<typename Settings>
+        void update(Manager<Settings>* manager) {
             for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
-                TransformComponent &transform = comps.template get_component<TransformComponent>(entity);
-                RigidBodyComponent &rigidbody = comps.template get_component<RigidBodyComponent>(entity);
+                TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
+                RigidBodyComponent &rigidbody = manager->template get_component<RigidBodyComponent>(entity);
 
                 if (Input::IsKeyPressed(Key::W)) {
                     glm::vec3 forward = transform.get_forward_direction();
