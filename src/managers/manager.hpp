@@ -82,6 +82,11 @@ namespace ecs {
         };
 
         template<typename TSystem>
+        TSystem& get_system() {
+            return std::get<mp::index_of<TSystem, SystemList>()>(m_systems);
+        }
+
+        template<typename TSystem>
         Bitset get_system_signature() {
             return std::get<mp::index_of<TSystem, SystemList>()>(m_signatures);
         }
@@ -181,7 +186,7 @@ namespace ecs {
         void update() {
             mp::for_tuple([this](auto &system) {
                               system.get_registered_entities().sort();
-                              system.update(*this);
+                              system.update(this);
                           },
                           m_systems);
         }
