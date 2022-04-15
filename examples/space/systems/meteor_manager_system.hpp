@@ -15,6 +15,7 @@
 #include "../components/decay_component.hpp"
 #include "../components/circle_collider_component.hpp"
 #include "../tags/tags.hpp"
+#include "../events/game_events.hpp"
 
 class Application;
 
@@ -71,9 +72,21 @@ namespace ecs {
             }
         }
 
+        template<typename Settings>
+        void receive(Manager<Settings>* manager, PlayerEndGameEvent event) {
+            current_wave = first_wave;
+            next_wave = second_wave;
+            for(EntityID entity : m_registered_entities) {
+                manager->destroy_entity(entity);
+            }
+        }
+
     private:
-        int current_wave = 5;
-        int next_wave = 8;
+        int first_wave = 5;
+        int second_wave = 8;
+
+        int current_wave = first_wave;
+        int next_wave = second_wave;
     };
 
 } // namespace ecs
