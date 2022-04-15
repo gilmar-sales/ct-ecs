@@ -18,6 +18,9 @@ target_include_directories(ct-ecs INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+option(OPTION_BUILD_EXAMPLES "Build all examples." ON)
+
 if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory(examples)
 	add_subdirectory(dependencies)
