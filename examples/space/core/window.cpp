@@ -43,6 +43,11 @@ Window::Window(const std::string &title, int width, int height) : data({title, w
     glfwSetWindowCloseCallback(native_window, [](GLFWwindow *glfw_window) {
         glfwSetWindowShouldClose(glfw_window, 1);
     });
+
+    glfwSetWindowSizeCallback(native_window, [](GLFWwindow* glfw_window, int width, int height){
+        auto *window = (Window *) glfwGetWindowUserPointer(glfw_window);
+        window->update_size(width, height);
+    });
 }
 
 Window::~Window() {

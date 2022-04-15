@@ -66,6 +66,7 @@ namespace ecs {
 
         template<typename Settings>
         void update(Manager<Settings>* manager) {
+            update_projection();
             for (int i = 0; i < m_registered_entities.size(); i++) {
                 auto entity = m_registered_entities[i];
                 TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
@@ -88,6 +89,8 @@ namespace ecs {
         GLuint fragmentShader;
         GLuint shaderProgram;
         glm::vec3 color;
+
+        void update_projection();
 
         const char *vertexSource = R"glsl(
             #version 330 core
