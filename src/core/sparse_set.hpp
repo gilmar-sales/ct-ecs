@@ -71,11 +71,11 @@ public:
     }
 
     auto begin() const {
-        return m_dense.begin();
+        return m_dense.rbegin();
     }
 
     auto end() const {
-        return m_dense.end();
+        return m_dense.rend();
     }
 
 private:
