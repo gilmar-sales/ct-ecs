@@ -20,7 +20,7 @@ The manager is the class that orchestrate everything, resize the capacity, run t
 ## Future features
  - finish the documentation
  - compile-time multithreading specification
- - change the observer pattern to publish-subscriber (it's a better pattern to multithreading)
+ - change the observer pattern to publish-subscriber (it's a better pattern for multithreading)
 
 ## Usage
 ### Set up the settings
