@@ -12,6 +12,7 @@ The ID doesn't represent the entity all the time, just in a system iteration, th
 ### Components
 Components are structures with only one purpose, store the entity data, doesn't have logic. For each entity there's a component with de the same ID that represents the relation between them.
 ### Tags
+Tags are "empty" structures that can be added to an entity, it's usefull to differentiate behaviours of entities in the systems.
 ### Systems
 Systems in the ct-ecs are **CRTP** classes with the registered entities, the update method and are observers of others systems.
 ### Manager
@@ -22,8 +23,8 @@ The manager is the class that orchestrate everything, resize the capacity, run t
  - change the observer pattern to publish-subscriber (it's a better pattern to multithreading)
 
 ## Usage
-### Setup the settings
-First of all, you'll need to create the basic design of your game, components, tags and systems:
+### Set up the settings
+First, you'll need to create the basic design of your game, components, tags and systems:
 
 ```cpp
 using ComponentList = std::tuple<TransformComponent, MeshComponent, RigidBodyComponent, MaterialComponent>;
