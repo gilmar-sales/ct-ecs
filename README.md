@@ -1,4 +1,4 @@
-# ct-ecs [![Build Status](https://app.travis-ci.com/gilmarxd/ct-ecs.svg?branch=master)](https://app.travis-ci.com/gilmarxd/ct-ecs)
+# ct-ecs [![Build Status](https://github.com/gilmarxd/ct-ecs/workflows/CMake/badge.svg)](https://github.com/gilmarxd/ct-ecs/actions/workflows/cmake.yml)
 header-only compile-time entity component system library
 
 ## Concept
