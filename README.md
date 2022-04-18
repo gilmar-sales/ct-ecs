@@ -1,4 +1,5 @@
 # ct-ecs [![Build Status](https://github.com/gilmarxd/ct-ecs/workflows/CMake/badge.svg)](https://github.com/gilmarxd/ct-ecs/actions/workflows/cmake.yml)
+[![Coverage](https://codecov.io/gh/gilmarxd/ct-ecs/branch/master/graph/badge.svg)](https://codecov.io/gh/gilmarxd/ct-ecs)
 header-only compile-time entity component system library
 
 ## Concept
