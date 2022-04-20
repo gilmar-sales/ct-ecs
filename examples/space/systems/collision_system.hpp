@@ -37,11 +37,10 @@ namespace ecs {
                 quadtree.insert({entity, glm::vec2(transform.position.x, transform.position.y), collider.radius});
             }
 
-            for (int i = 0; i < m_registered_entities.size(); i++) {
-                auto entity = m_registered_entities[i];
-                TransformComponent &transform = manager->template get_component<TransformComponent>(entity);
-                RigidBodyComponent &rigidbody = manager->template get_component<RigidBodyComponent>(entity);
-                CircleColliderComponent &collider = manager->template get_component<CircleColliderComponent>(entity);
+            for (EntityID entity : m_registered_entities) {
+                auto &transform = manager->template get_component<TransformComponent>(entity);
+                auto &rigidbody = manager->template get_component<RigidBodyComponent>(entity);
+                auto &collider = manager->template get_component<CircleColliderComponent>(entity);
 
                 Entity ent = {entity, glm::vec2(transform.position.x, transform.position.y), collider.radius};
                 std::vector<Entity> collisions = std::vector<Entity>();
@@ -56,13 +55,15 @@ namespace ecs {
                             manager->template get_component<PlayerComponent>(bullet_comp.owner).score += 1;
 
                             float new_radius = collision.radius / 2.f;
+                            float new_scale = new_radius / 32.f;
+
                             if (new_radius > 10) {
                                 TransformComponent &meteor_transform = manager->template get_component<TransformComponent>(
                                         collision.id);
                                 CircleColliderComponent &meteor_collider = manager->template get_component<CircleColliderComponent>(
                                         collision.id);
 
-                                meteor_transform.scale = {new_radius, new_radius, new_radius};
+                                meteor_transform.scale = {new_scale, new_scale, new_scale};
                                 meteor_collider.radius = new_radius;
                             } else {
                                 manager->destroy_entity(collision.id);

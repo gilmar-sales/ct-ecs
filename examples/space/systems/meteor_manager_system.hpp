@@ -8,7 +8,7 @@
 
 #include "../core/time.hpp"
 #include "../core/input.hpp"
-#include "../core/mesh_asset.hpp"
+#include "../core/texture_manager.hpp"
 
 #include "../components/transform_component.hpp"
 #include "../components/rigid_body_component.hpp"
@@ -38,7 +38,7 @@ namespace ecs {
 
                     TransformComponent &transform = manager->template add_component<TransformComponent>(ent);
                     RigidBodyComponent &rigidbody = manager->template add_component<RigidBodyComponent>(ent);
-                    MeshComponent &mesh = manager->template add_component<MeshComponent>(ent);
+                    SpriteComponent &sprite = manager->template add_component<SpriteComponent>(ent);
                     CircleColliderComponent &collider = manager->template add_component<CircleColliderComponent>(ent);
 
                     std::random_device rd; // obtain a random number from hardware
@@ -53,17 +53,17 @@ namespace ecs {
                     auto angle = (float) distrAngle(gen);
 
                     auto speed = (float) distrScale(gen);
-                    auto size = (float) distrScale(gen);
 
                     transform.position = {x, y, 0};
                     transform.rotation = {0, 0, angle};
-                    transform.scale = {size, size, size};
+                    transform.scale = {1, 1, 1};
 
                     rigidbody.velocity = glm::normalize(glm::vec3(x, y, 0)) * speed;
                     rigidbody.mass = 0.f;
 
-                    mesh.VAO = MeshAsset::get_circle_mesh();
-                    collider.radius = size;
+                    sprite.textures[0] = TextureManager::get()->get_texture_index("resources/meteor.png");
+                    sprite.textures_count = 1;
+                    collider.radius = 32.f;
                 }
 
                 int previous_wave = current_wave;

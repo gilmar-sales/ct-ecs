@@ -4,6 +4,7 @@ find_package(OpenGL REQUIRED)
 
 file(GLOB_RECURSE SPACE_SRC
     "*.cpp"
+	"*.hpp"
 )
 
 add_executable(space 

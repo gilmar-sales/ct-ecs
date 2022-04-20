@@ -59,17 +59,17 @@ void Application::init_player() {
     auto ent = mgr.create_entity();
 
     auto &transform = mgr.add_component<ecs::TransformComponent>(ent);
-    auto &mesh = mgr.add_component<ecs::MeshComponent>(ent);
+    auto &sprite = mgr.add_component<ecs::SpriteComponent>(ent);
     auto &rigidbody = mgr.add_component<ecs::RigidBodyComponent>(ent);
     auto &circle_collider = mgr.add_component<ecs::CircleColliderComponent>(ent);
     auto &life = mgr.add_component<ecs::PlayerComponent>(ent);
+    auto &gun = mgr.add_component<ecs::LaserGunComponent>(ent);
     mgr.add_tag<ecs::PlayerTag>(ent);
 
-    transform.position = {0, 0, 0};
-    transform.scale = {20, 20, 20};
-    transform.rotation = {0, 0, 0};
+    transform.scale = {1.5f, 1.5f, 1.5f};
 
-    mesh.VAO = MeshAsset::get_triangle_mesh();
+    sprite.textures[0] = TextureManager::get()->get_texture_index("resources/spaceship.png");
+    sprite.textures_count = 1;
     rigidbody.mass = 2;
     circle_collider.radius = 10;
     life.lifes = 4;
