@@ -13,7 +13,7 @@
 #include "../systems/player_system.hpp"
 #include "../tags/tags.hpp"
 
-using ComponentList = std::tuple<ecs::PlayerComponent, ecs::TransformComponent, ecs::MeshComponent, ecs::RigidBodyComponent, ecs::DecayComponent, ecs::CircleColliderComponent, ecs::BulletComponent>;
+using ComponentList = std::tuple<ecs::PlayerComponent, ecs::TransformComponent, ecs::SpriteComponent, ecs::RigidBodyComponent, ecs::LaserGunComponent, ecs::DecayComponent, ecs::CircleColliderComponent, ecs::BulletComponent>;
 using TagList = std::tuple<ecs::PlayerTag, ecs::EnemyTag, ecs::BulletTag>;
 using SystemList = std::tuple<ecs::PhysicsSystem, ecs::RenderSystem, ecs::PlayerMoveSystem, ecs::MeteorManagerSystem, ecs::ShootSystem, ecs::DecaySystem, ecs::CollisionSystem, ecs::PlayerSystem>;
 using Settings = ecs::Settings<ComponentList, TagList, SystemList>;
