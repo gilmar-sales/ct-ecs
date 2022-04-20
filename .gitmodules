@@ -2,13 +2,13 @@
 	path = dependencies/mp
 	url = https://github.com/gilmarxd/mp.git
 [submodule "dependencies/glad"]
-	path = dependencies/glad
+	path = examples/dependencies/glad
 	url = https://github.com/gilmarxd/glad.git
 [submodule "dependencies/glfw"]
-	path = dependencies/glfw
+	path = examples/dependencies/glfw
 	url = https://github.com/gilmarxd/glfw.git
 [submodule "dependencies/glm"]
-	path = dependencies/glm
+	path = examples/dependencies/glm
 	url = https://github.com/g-truc/glm.git
 [submodule "tests/dependencies/googletest"]
 	path = tests/dependencies/googletest

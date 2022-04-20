@@ -35,3 +35,5 @@ target_precompile_headers(space
     <GLFW/glfw3.h>
     <glm/glm.hpp>
 )
+
+file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
