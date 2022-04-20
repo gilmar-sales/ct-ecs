@@ -198,8 +198,8 @@ namespace ecs {
     private:
         void initialize_signatures() {
 
-            mp::for_tuple([this](auto system) {
-                              using System = decltype(system);
+            mp::for_tuple([this](auto& system) {
+                              using System = std::remove_reference_t<decltype(system)>;
                               mp::for_tuple([this](auto sig) {
                                   using Sig = decltype(sig);
 
