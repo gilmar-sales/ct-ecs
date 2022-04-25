@@ -10,11 +10,13 @@ public:
     SparseSet(unsigned capacity = 512u) {
         m_dense.reserve(capacity);
         m_sparse.resize(capacity);
+
+        m_sorted = false;
     }
 
     ~SparseSet() = default;
 
-    void insert(T n) {
+    CT_ECS_SPEC void insert(T n) {
         if (contains(n))
             return;
 
@@ -24,7 +26,7 @@ public:
         m_sorted = false;
     }
 
-    void remove(T n) {
+    CT_ECS_SPEC void remove(T n) {
         if (!contains(n))
             return;
 
@@ -36,28 +38,26 @@ public:
         m_sorted = false;
     }
 
-    inline bool contains(T n) const {
+    CT_ECS_SPEC bool contains(T n) const {
         return m_sparse[n] < m_dense.size() && m_dense[m_sparse[n]] == n;
     }
 
-    inline void clear() {
+    CT_ECS_SPEC void clear() {
         m_dense.clear();
     }
 
-    void resize(unsigned size) {
+    CT_ECS_SPEC void resize(unsigned size) {
         m_dense.reserve(size);
         m_sparse.resize(size);
     }
 
-    void sort() {
+    CT_ECS_SPEC void sort() {
         if (m_sorted)
             return;
 
-        std::sort(m_dense.begin(), m_dense.end());
+        dense_sort();
 
-        for (T i = 0; i < m_dense.size(); i++) {
-            m_sparse[m_dense[i]] = i;
-        }
+        sparse_reorder();
 
         m_sorted = true;
     }
@@ -66,7 +66,7 @@ public:
         return m_dense[index];
     };
 
-    auto size() {
+    unsigned long size() {
         return m_dense.size();
     }
 
@@ -78,6 +78,16 @@ public:
         return m_dense.rend();
     }
 
+protected:
+    CT_ECS_SPEC void dense_sort() {
+        std::sort(m_dense.begin(), m_dense.end());
+    }
+
+    CT_ECS_SPEC void sparse_reorder() {
+        for (T i = 0; i < m_dense.size(); i++) {
+            m_sparse[m_dense[i]] = i;
+        }
+    }
 private:
     std::vector<T> m_dense;
     std::vector<T> m_sparse;

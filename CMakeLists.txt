@@ -19,6 +19,8 @@ target_include_directories(ct-ecs INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+target_precompile_headers(ct-ecs PUBLIC macros.hpp)
+
 option(OPTION_BUILD_EXAMPLES "Build all examples." ON)
 
 if(OPTION_BUILD_EXAMPLES)

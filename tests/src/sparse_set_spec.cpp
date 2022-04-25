@@ -1,23 +1,32 @@
 //
 // Created by gilmar on 12/21/21.
 //
-//
-// Created by gilmar on 12/21/21.
-//
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "core/sparse_set.hpp"
+
+class SparseSetMock : public SparseSet<unsigned> {
+public:
+    SparseSetMock() {
+        ON_CALL(*this, dense_sort).WillByDefault([this](){
+            return this->SparseSet<unsigned>::dense_sort();
+        });
+    }
+
+    MOCK_METHOD(void, dense_sort, (), (override));
+};
 
 class SparseSetSpec : public ::testing::Test {
 protected:
-    virtual void SetUp() {
-        set = new SparseSet<unsigned>();
+    void SetUp() override {
+        set = new SparseSetMock();
     }
 
-    virtual void TearDown() {
+    void TearDown() override {
         delete set;
     }
 
-    SparseSet<unsigned> *set;
+    SparseSetMock *set = nullptr;
 };
 
 TEST_F(SparseSetSpec, SparseSetShouldInsertElements) {
@@ -26,6 +35,10 @@ TEST_F(SparseSetSpec, SparseSetShouldInsertElements) {
     for (auto num: numbers) {
         set->insert(num);
     }
+
+    unsigned numbers_count = sizeof(numbers) / sizeof(numbers[0]);
+
+    ASSERT_EQ(numbers_count, set->size());
 
     for (auto num: numbers) {
         ASSERT_TRUE(set->contains(num));
@@ -90,21 +103,49 @@ TEST_F(SparseSetSpec, SparseSetShouldNotContainRemovedElementsAndContainTheRest)
     ASSERT_TRUE(set->size() == 3);
 }
 
-TEST_F(SparseSetSpec, SparseSetShouldSortWithoutRemoveAnyElement) {
+TEST_F(SparseSetSpec, SparseSetShouldSortTheFirstTimeAfterInitialization) {
+    using testing::Exactly;
+    SparseSetMock setMock = SparseSetMock();
     unsigned numbers[] = {10, 200, 30, 40, 65, 80};
     for (auto num: numbers) {
-        set->insert(num);
+        setMock.insert(num);
     }
 
-    set->sort();
+    EXPECT_CALL(setMock, dense_sort()).Times(1);
 
-    for (int i = 1; i < set->size(); i++) {
-        ASSERT_LT((*set)[i - 1], (*set)[i]);
+    setMock.sort();
+
+    for (int i = 1; i < setMock.size(); i++) {
+        ASSERT_LT(setMock[i - 1], setMock[i]);
     }
 
     for (auto num: numbers) {
-        ASSERT_TRUE(set->contains(num));
+        ASSERT_TRUE(setMock.contains(num));
     }
 
-    ASSERT_TRUE(set->size() == 6);
+    ASSERT_TRUE(setMock.size() == 6);
+}
+
+TEST_F(SparseSetSpec, SparseSetShouldSortAutomaticallyOnlyWhenNeeded) {
+    unsigned numbers[] = {100, 25, 90, 80, 1000, 900, 872, 646, 853, 217, 981};
+    set->resize(11000);
+
+    for (auto number : numbers) {
+        set->insert(number);
+    }
+
+    EXPECT_CALL(*set, dense_sort()).Times(1);
+
+    set->sort();
+    set->sort();
+
+    EXPECT_CALL(*set, dense_sort()).Times(1);
+    set->insert(123);
+    set->sort();
+    set->sort();
+
+    unsigned numbers_count = sizeof(numbers) / sizeof(numbers[0]) + 1;
+
+    ASSERT_EQ(numbers_count, set->size());
+    ASSERT_TRUE(set->contains(123));
 }
