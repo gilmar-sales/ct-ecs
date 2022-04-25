@@ -68,7 +68,7 @@ void Application::init_player() {
 
     transform.scale = {1.5f, 1.5f, 1.5f};
 
-    sprite.textures[0] = TextureManager::get()->get_texture_index("resources/spaceship.png");
+    sprite.textures[0] = TextureManager::get()->get_texture_index("resources/x_wing.png");
     sprite.textures_count = 1;
     rigidbody.mass = 2;
     circle_collider.radius = 10;

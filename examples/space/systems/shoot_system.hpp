@@ -80,7 +80,7 @@ namespace ecs {
             bullet_rigidbody.velocity = forward * 500.f;
             bullet_rigidbody.mass = 0;
 
-            bullet_sprite.textures[0] = TextureManager::get()->get_texture_index("resources/shoot.png");
+            bullet_sprite.textures[0] = TextureManager::get()->get_texture_index("resources/laser_shot.png");
             bullet_sprite.textures_count = 1;
 
             bullet_decay.max_time = 0.8f;
